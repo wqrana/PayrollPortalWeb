@@ -1,0 +1,138 @@
+﻿@model TimeAide.Web.Models.UserInformation
+<link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/multi-select.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.multi-select.js"></script>
+<style>
+
+    ul.ui-front {
+        z-index: 1100;
+    }
+    .ms-container {
+        width: 80% ;
+    }
+</style>
+
+<div id="ApplicationUserCreateEdit_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">User - Add</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        @Html.HiddenFor(m => m.Id, new { id = "UserInformationId" })
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Employee Id: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                            <label class="col-md-2 col-form-label">First Name: <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Middle Initial: <span class="text-danger"></span></label>
+                            <div class="col-md-2">
+                                @Html.EditorFor(model => model.MiddleInitial, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">1st Last Name: <span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.FirstLastName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">2nd Last Name: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.SecondLastName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0">Type: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                <select id="LoginType" class="form-control">
+                                    <option value="0">User</option>
+                                    <option value="1">Admin</option>
+                                </select>
+                            </div>
+                            <label class="col-md-1 col-form-label pr-0 pl-0">Status: <span class="text-danger">*</span></label>
+                            <div class="col-md-2">
+                                <select id="LoginStatus" class="form-control">
+                                    <option value="Active">Active</option>
+                                    <option value="InActive">InActive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">User Company: <span class="text-danger"></span></label>
+                            <span class="pt-2 pl-3" style="font-size:smaller"><a href='javascript:void(0)' id='select-all'>Select All</a>/ <a href='javascript:void(0)' id='deselect-all'>Deselect All</a></span>
+                            <div class="offset-md-2 col-md-12 mt-2">
+                                @Html.DropDownList("UserCompanyList",
+                                     new MultiSelectList(ViewBag.UserCompanyList,
+                                     "Value", "Text"),
+                                new
+                                {
+                                    multiple = "multiple"
+
+                                })
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Login Email: <span class="text-danger">*</span></label>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.LoginEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Password: <span class="text-danger">*</span></label>
+                            <div class="col-md-3">
+                                @Html.PasswordFor(m => m.LoginPassword, new { @class = "form-control  text-box single-line" })
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="submit-section mt-1">
+                    <button id="btnSaveApplicationUser" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //$("#LoginStatus").val("Active");
+        $('#UserCompanyList').multiSelect({ keepOrder: false });
+
+        $('#select-all').click(function () {
+            $('#UserCompanyList').multiSelect('select_all');
+            return false;
+        });
+        $('#deselect-all').click(function () {
+            $('#UserCompanyList').multiSelect('deselect_all');
+            return false;
+        });
+        $("#btnSaveApplicationUser").click(function () {
+            saveCreateApplicationUserData();
+        });
+
+
+    });
+
+</script>
+
+

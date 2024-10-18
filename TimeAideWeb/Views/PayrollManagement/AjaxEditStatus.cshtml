@@ -1,0 +1,103 @@
+﻿@model TimeAide.Web.Models.Payroll
+<style>
+    .showStatus {
+        display: block;
+    }
+
+    .hideStatus {
+        display: none;
+    }
+</style>
+
+<div id="editPayrollStatus_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            @Html.Hidden("StatusTypeId", (int)ViewBag.StatusTypeId)
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- @ViewBag.StatusTypeName</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Company: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Payroll: <span class="text-danger"></span></label>
+                            <div class="col-md-5 pr-0">
+                                @Html.EditorFor(model => model.PayrollName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Pay Date: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.PayDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Changed By: <span class="text-danger"></span></label>
+                            <div class="col-md-5 pr-0">
+                                @Html.EditorFor(model => model.PaymentStatusByName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-1 col-form-label">  On: <span class="text-danger"></span></label>
+                            <div class="col-md-4 pl-0">
+                                @Html.EditorFor(model => model.PaymentStatusDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        @{ var showStatus = (int)ViewBag.StatusTypeId == 0 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+
+
+                                <label class="col-md-3 col-form-label pr-0">Payment Status: <span class="text-danger">*</span></label>
+
+                                <div class="col-md-9">
+                                    @Html.DropDownList("PaymentStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+
+                            </div>
+                        </div>
+                        @{ showStatus = (int)ViewBag.StatusTypeId == 1 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label pr-0">Payroll Status: <span class="text-danger">*</span></label>
+
+                                <div class="col-md-9">
+                                    @Html.DropDownList("PayrollStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEditStatus" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#PayDate").datetimepicker({ format: 'MM/DD/YYYY' });
+
+        $("#btnSaveEditStatus").click(function () {
+            var statusTypeId = $('#StatusTypeId').val();
+            var obj = new Object();
+            obj.PayrollId = @Model.Id;
+            obj.StatusTypeId = statusTypeId;
+            obj.PaymentStatusId = $("#PaymentStatusId").val();
+            obj.PayrollStatusId = $("#PayrollStatusId").val();
+            SaveEditStatus(obj);
+        });
+
+    });
+</script>

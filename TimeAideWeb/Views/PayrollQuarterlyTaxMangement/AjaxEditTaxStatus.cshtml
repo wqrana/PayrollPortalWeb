@@ -1,0 +1,382 @@
+﻿@model TimeAide.Web.Models.PayrollQuarterlyTax
+<style>
+    .showStatus {
+        display: block;
+    }
+
+    .hideStatus {
+        display: none;
+    }
+</style>
+
+<div id="editQuarterlyTaxStatus_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Hidden("StatusTypeId", (int)ViewBag.StatusTypeId)
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- @ViewBag.StatusTypeName</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Company: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Quarter: <span class="text-danger"></span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.EditorFor(model => model.Quarter, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Start Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.QuarterStartDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        @{
+                            var changedByName = "";
+                            var whFieldName = "";
+                            decimal whFieldValue = 0;
+                            DateTime? statusChangeDte = DateTime.Now;
+                            switch ((int)ViewBag.StatusTypeId)
+                            {
+                                case 0:
+                                    changedByName = Model.FUTATaxStatusByName;
+                                    statusChangeDte = Model.FUTATaxStatusDate;
+                                    whFieldName = "FUTA WH";
+                                    whFieldValue = Model.FUTAWHAmount ?? 0;
+                                    break;
+                                case 1:
+                                    changedByName = Model.SUTATaxStatusByName;
+                                    statusChangeDte = Model.SUTATaxStatusDate;
+                                    whFieldName = "SUTA WH";
+                                    whFieldValue = Model.SUTAWHAmount ?? 0;
+                                    break;
+                                case 2:
+                                    changedByName = Model.SINOTTaxStatusByName;
+                                    statusChangeDte = Model.SINOTTaxStatusDate;
+                                    whFieldName = "SINOT WH";
+                                    whFieldValue = Model.SINOTWHAmount ?? 0;
+                                    break;
+                                case 3:
+                                    changedByName = Model.CHOFERILTaxStatusByName;
+                                    statusChangeDte = Model.CHOFERILTaxStatusDate;
+                                    whFieldName = "CHOFERIL WH";
+                                    whFieldValue = Model.CHOFERILWHAmount ?? 0;
+                                    break;
+                            }
+                        }
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">End Date: <span class="text-danger"></span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.EditorFor(model => model.QuarterEndDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">@whFieldName: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => whFieldValue, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            <label class="col-md-2 col-form-label">Changed By: <span class="text-danger"></span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.EditorFor(model => changedByName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">On: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => statusChangeDte, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        @{ var showStatus = ViewBag.StatusTypeId == 0 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">FUTA Status: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("FUTATaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FUTATaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        @{ showStatus = ViewBag.StatusTypeId == 1 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">SUTA Status: <span class="text-danger">*</span></label>
+
+                                <div class="col-md-4">
+                                    @Html.DropDownList("SUTATaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SUTATaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SUTATaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SUTATaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SUTATaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        @{ showStatus = ViewBag.StatusTypeId == 2 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">SINOT Status: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("SINOTTaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SINOTTaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SINOTTaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.SINOTTaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SINOTTaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        @{ showStatus = ViewBag.StatusTypeId == 3 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">CHOFERIL Status: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("CHOFERILTaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CHOFERILTaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CHOFERILTaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.CHOFERILTaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CHOFERILTaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEditTaxStatus" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+            $('#FUTATaxDepositAmount,#SUTATaxDepositAmount,#SINOTTaxDepositAmount,#CHOFERILTaxDepositAmount').blur(function () {
+                debugger;
+                var taxAmount = $(this).val();
+                if (isNaN(taxAmount)) {
+                    $(this).val("");
+                }
+            });
+            //$("#FUTATaxDepositStatusId,#SUTATaxDepositStatusId,#SINOTTaxDepositStatusId,#CHOFERILTaxDepositStatusId")
+            //    .on("change", function () {
+            //        debugger;
+            //        console.log($(this).prop("id"));
+            //        var whAmount = $('#whFieldValue').val();
+            //        var statusId = $(this).prop("id");
+            //        var endIndex = statusId.indexOf("StatusId");
+            //        var depositElement = "#" + statusId.slice(0, endIndex) + "Amount";
+            //        if ($(this).val() == 2) {
+            //            $(depositElement).val(whAmount);
+            //        }
+            //        else {
+            //            $(depositElement).val(null);
+            //        }
+
+            //    });
+        });
+
+        $("#btnSaveEditTaxStatus").click(function () {
+            debugger;
+            var statusTypeId = $('#StatusTypeId').val();
+            var IsValidated = true;
+            var isfieldValidationRequired = false;
+            var obj = new Object();
+            obj.Id = @Model.Id;
+            obj.StatusTypeId = statusTypeId;
+                       
+            switch (statusTypeId) {
+                case "0": //FUTA
+                    obj.FUTATaxDepositStatusId = $("#FUTATaxDepositStatusId").val();
+                    obj.TaxReferenceNo = $("#FUTATaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#FUTATaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#FUTATaxDepositDate").val();
+                    obj.Comments = $("#FUTATaxComments").val();
+                    if (obj.FUTATaxDepositStatusId == "")
+                        IsValidated = false;
+                    else if (obj.FUTATaxDepositStatusId == 2)
+                        isfieldValidationRequired = true;
+
+                    break;
+                case "1": //SUTA
+                    obj.SUTATaxDepositStatusId = $("#SUTATaxDepositStatusId").val();
+                    obj.TaxReferenceNo = $("#SUTATaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#SUTATaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#SUTATaxDepositDate").val();
+                    obj.Comments = $("#SUTATaxComments").val();
+
+                    if (obj.SUTATaxDepositStatusId == "")
+                        IsValidated = false;
+                    else if (obj.SUTATaxDepositStatusId == 2)
+                        isfieldValidationRequired = true;
+
+                    break;
+                case "2": //SINOT
+                    obj.SINOTTaxDepositStatusId = $("#SINOTTaxDepositStatusId").val();
+                    obj.TaxReferenceNo = $("#SINOTTaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#SINOTTaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#SINOTTaxDepositDate").val();
+                    obj.Comments = $("#SINOTTaxComments").val();
+
+                    if (obj.SINOTTaxDepositStatusId == "")
+                        IsValidated = false;
+                    else if (obj.SINOTTaxDepositStatusId == 2) {
+                        isfieldValidationRequired = true;
+                    }
+                    break;
+                case "3": //CHOFERIL
+                    obj.CHOFERILTaxDepositStatusId = $("#CHOFERILTaxDepositStatusId").val();
+                    obj.TaxReferenceNo = $("#CHOFERILTaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#CHOFERILTaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#CHOFERILTaxDepositDate").val();
+                    obj.Comments = $("#CHOFERILTaxComments").val();
+
+                    if (obj.CHOFERILTaxDepositStatusId == "")
+                        IsValidated = false;
+                    else if (obj.CHOFERILTaxDepositStatusId == 2) {
+                        isfieldValidationRequired = true;
+                    }
+
+                    break;
+            }
+            if (!IsValidated) {
+                showAlertAutoHide("", "Error", "Missing Required Field(s)");
+                return;
+            }
+            if (isfieldValidationRequired) {
+                if (!validateTaxStatusRequiredFields(obj)) return;
+            }
+            debugger;
+            //Check for WHT amount
+            var whtPayableAmout = $("#whFieldValue").val() == "" ? 0.00 : Number($("#whFieldValue").val());
+            var whtTotalPayable = Number(Math.abs(whtPayableAmout).toFixed(2));
+            var taxDepositAmount = Number(obj.TaxDepositAmount);
+
+            if (statusTypeId == "0" && obj.FUTATaxDepositStatusId == 2) {
+                if (whtTotalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "FUTA Deposit amount is not equal to WHT Amount.");
+                }
+            }
+            else if (statusTypeId == "1" && obj.SUTATaxDepositStatusId == 2) {
+                if (whtTotalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "SUTA Deposit amount is not equal to WHT Amount.");
+                }
+            }
+            else if (statusTypeId == "2" && obj.SINOTTaxDepositStatusId == 2) {
+                if (whtTotalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "SINOT Deposit amount is not equal to WHT Amount.");
+                }
+            }
+            else if (statusTypeId == "3" && obj.CHOFERILTaxDepositStatusId == 2) {
+                if (whtTotalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "CHOFERIL Deposit amount is not equal to WHT Amount.");
+                }
+            }
+            //WHT validation
+
+            SaveEditTaxStatus(obj);
+
+        });
+
+    });
+    function validateTaxStatusRequiredFields(obj) {
+        var IsValidated = true;
+        var fieldValidationMsg = "Missing Required Status Field(s) ";
+        debugger;
+
+        if (obj.TaxReferenceNo == "") {
+            fieldValidationMsg += "[ReceiptNo] ";
+            IsValidated = false;
+        }
+        if (obj.TaxDepositAmount == "") {
+            fieldValidationMsg += "[DepositAmount] ";
+            IsValidated = false;
+        }
+        if (obj.TaxDepositDate == "") {
+            fieldValidationMsg += "[Deposit Date] ";
+            IsValidated = false;
+        }
+
+        if (!IsValidated) {
+            showAlertAutoHide("", "Error", fieldValidationMsg);           
+        }
+
+        return IsValidated;
+    }
+</script>

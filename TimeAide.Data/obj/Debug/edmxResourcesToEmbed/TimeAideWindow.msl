@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TIMEAIDE_7_PSICOModelStoreContainer" CdmEntityContainer="TimeAideWindowContext">
+    <EntitySetMapping Name="tCompanies">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tCompany">
+        <MappingFragment StoreEntitySet="tCompany">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+          <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBatch">
+      <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblBatch">
+        <MappingFragment StoreEntitySet="tblBatch">
+          <ScalarProperty Name="ACHFileName" ColumnName="ACHFileName" />
+          <ScalarProperty Name="intACHSentCount" ColumnName="intACHSentCount" />
+          <ScalarProperty Name="strFUTATaxRptName" ColumnName="strFUTATaxRptName" />
+          <ScalarProperty Name="varFUTATaxConfirmation" ColumnName="varFUTATaxConfirmation" />
+          <ScalarProperty Name="strFUTATaxStatusByName" ColumnName="strFUTATaxStatusByName" />
+          <ScalarProperty Name="dtFUTATaxStatusDate" ColumnName="dtFUTATaxStatusDate" />
+          <ScalarProperty Name="strFUTATaxReceiptNo" ColumnName="strFUTATaxReceiptNo" />
+          <ScalarProperty Name="dtFUTATaxDepositDate" ColumnName="dtFUTATaxDepositDate" />
+          <ScalarProperty Name="decFUTATaxDepositAmount" ColumnName="decFUTATaxDepositAmount" />
+          <ScalarProperty Name="intFUTATaxDepositStatusId" ColumnName="intFUTATaxDepositStatusId" />
+          <ScalarProperty Name="intFUTATaxDepositScheduleId" ColumnName="intFUTATaxDepositScheduleId" />
+          <ScalarProperty Name="strHaciendaTaxRptName" ColumnName="strHaciendaTaxRptName" />
+          <ScalarProperty Name="varHaciendaTaxConfirmation" ColumnName="varHaciendaTaxConfirmation" />
+          <ScalarProperty Name="strHaciendaTaxStatusByName" ColumnName="strHaciendaTaxStatusByName" />
+          <ScalarProperty Name="dtHaciendaTaxStatusDate" ColumnName="dtHaciendaTaxStatusDate" />
+          <ScalarProperty Name="strHaciendaTaxReceiptNo" ColumnName="strHaciendaTaxReceiptNo" />
+          <ScalarProperty Name="dtHaciendaTaxDepositDate" ColumnName="dtHaciendaTaxDepositDate" />
+          <ScalarProperty Name="decHaciendaTaxDepositAmount" ColumnName="decHaciendaTaxDepositAmount" />
+          <ScalarProperty Name="intHaciendaTaxDepositStatusId" ColumnName="intHaciendaTaxDepositStatusId" />
+          <ScalarProperty Name="intHaciendaTaxDepositScheduleId" ColumnName="intHaciendaTaxDepositScheduleId" />
+          <ScalarProperty Name="strFederalTaxRptName" ColumnName="strFederalTaxRptName" />
+          <ScalarProperty Name="varFederalTaxConfirmation" ColumnName="varFederalTaxConfirmation" />
+          <ScalarProperty Name="strFederalTaxStatusByName" ColumnName="strFederalTaxStatusByName" />
+          <ScalarProperty Name="dtFederalTaxStatusDate" ColumnName="dtFederalTaxStatusDate" />
+          <ScalarProperty Name="strFederalTaxEFTPSNo" ColumnName="strFederalTaxEFTPSNo" />
+          <ScalarProperty Name="dtFederalTaxDepositDate" ColumnName="dtFederalTaxDepositDate" />
+          <ScalarProperty Name="decFederalTaxDepositAmount" ColumnName="decFederalTaxDepositAmount" />
+          <ScalarProperty Name="intFederalTaxDepositStatusId" ColumnName="intFederalTaxDepositStatusId" />
+          <ScalarProperty Name="intFederalTaxDepositScheduleId" ColumnName="intFederalTaxDepositScheduleId" />
+          <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+          <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+          <ScalarProperty Name="strPayrollSummaryRptName" ColumnName="strPayrollSummaryRptName" />
+          <ScalarProperty Name="varCompanyPayrollSummary" ColumnName="varCompanyPayrollSummary" />
+          <ScalarProperty Name="strPaymentConfirmationRptName" ColumnName="strPaymentConfirmationRptName" />
+          <ScalarProperty Name="varPaymentConfirmation" ColumnName="varPaymentConfirmation" />
+          <ScalarProperty Name="dtPaymentStatusDate" ColumnName="dtPaymentStatusDate" />
+          <ScalarProperty Name="strPaymentStatusByName" ColumnName="strPaymentStatusByName" />
+          <ScalarProperty Name="intPaymentStatusId" ColumnName="intPaymentStatusId" />
+          <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+          <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+          <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+          <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+          <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+          <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+          <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+          <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+          <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+          <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spPay_rpt_CuadreQuarterlyReport" FunctionName="TIMEAIDE_7_PSICOModel.Store.spPay_rpt_CuadreQuarterlyReport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spPay_rpt_CuadreQuarterlyReport_Result">
+          <ScalarProperty Name="K401_SALARIOS_EXENTOS" ColumnName="K401_SALARIOS_EXENTOS" />
+          <ScalarProperty Name="DEPOSITO_FED" ColumnName="DEPOSITO_FED" />
+          <ScalarProperty Name="DEPOSITO_PR" ColumnName="DEPOSITO_PR" />
+          <ScalarProperty Name="EFMLAE" ColumnName="EFMLAE" />
+          <ScalarProperty Name="EFTPS_FED" ColumnName="EFTPS_FED" />
+          <ScalarProperty Name="EPSLA" ColumnName="EPSLA" />
+          <ScalarProperty Name="EXENTO_26" ColumnName="EXENTO_26" />
+          <ScalarProperty Name="FECHA_DEPOSITO_FED" ColumnName="FECHA_DEPOSITO_FED" />
+          <ScalarProperty Name="FECHA_DEPOSITO_PR" ColumnName="FECHA_DEPOSITO_PR" />
+          <ScalarProperty Name="FECHA_NOMINA" ColumnName="FECHA_NOMINA" />
+          <ScalarProperty Name="FED_USA" ColumnName="FED_USA" />
+          <ScalarProperty Name="FICA_MED" ColumnName="FICA_MED" />
+          <ScalarProperty Name="FICA_MED_PLUS" ColumnName="FICA_MED_PLUS" />
+          <ScalarProperty Name="FICA_SS" ColumnName="FICA_SS" />
+          <ScalarProperty Name="FUTA" ColumnName="FUTA" />
+          <ScalarProperty Name="FUTA_DEPOSIT" ColumnName="FUTA_DEPOSIT" />
+          <ScalarProperty Name="FUTA_RECEIPT" ColumnName="FUTA_RECEIPT" />
+          <ScalarProperty Name="HACIENDA_PR" ColumnName="HACIENDA_PR" />
+          <ScalarProperty Name="HACIENDA_RECEIPT" ColumnName="HACIENDA_RECEIPT" />
+          <ScalarProperty Name="INCOME_TAX_RETENIDO" ColumnName="INCOME_TAX_RETENIDO" />
+          <ScalarProperty Name="MES" ColumnName="MES" />
+          <ScalarProperty Name="NOMBRE_NOMINA" ColumnName="NOMBRE_NOMINA" />
+          <ScalarProperty Name="SALARIO_TRIBUTABLES" ColumnName="SALARIO_TRIBUTABLES" />
+          <ScalarProperty Name="SALARIOS_MED" ColumnName="SALARIOS_MED" />
+          <ScalarProperty Name="SALARIOS_MED_PLUS" ColumnName="SALARIOS_MED_PLUS" />
+          <ScalarProperty Name="SALARIOS_SS" ColumnName="SALARIOS_SS" />
+          <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+          <ScalarProperty Name="TOTAL_FED" ColumnName="TOTAL_FED" />
+          <ScalarProperty Name="TOTAL_SALARIOS" ColumnName="TOTAL_SALARIOS" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

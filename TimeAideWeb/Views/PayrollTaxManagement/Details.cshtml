@@ -1,0 +1,189 @@
+﻿@model TimeAide.Web.Models.Payroll
+
+<div id="payrollTaxesDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Payroll Taxes - Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-auto float-right ml-auto">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-white" onclick='javascript:printDetail()'><i class="fa fa-print fa-lg"></i> Print</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="divPrintDetail">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Company:
+                            </label>
+                            <div class="col-md-5 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompanyName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Payroll:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayrollName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Pay Date:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayDate)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                SS Payable:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SSPayableAmount)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Med Payable:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.MedPayableAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Fed Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FederalTaxDepositStatus.FederalTaxDepositStatusName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Fed Schedule:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FederalTaxDepositSchedule.FederalTaxDepositScheduleName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                HACIENDA Payable:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HaciendaPayableAmount)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                HACIENDA Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HaciendaTaxDepositStatus.HaciendaTaxDepositStatusName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                HACIENDA Schedule:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.HaciendaTaxDepositSchedule.HaciendaTaxDepositScheduleName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Payable:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTAPayableAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTATaxDepositSchedule.FUTATaxDepositScheduleName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Schedule:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTATaxDepositSchedule.FUTATaxDepositScheduleName)
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+            <div style="display:none" id="tblPrint">
+                <table style="border:none;">
+                    <tr>
+                        <th colspan="4">Payroll Taxes - Detail</th>
+
+                    </tr>
+                    <tr>
+                        <th align="left">Company:</th>
+                        <td>@Html.DisplayFor(m => m.CompanyName)</td>
+                        <th align="left"> Payroll:</th>
+                        <td>@Html.DisplayFor(m => m.PayrollName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Pay Date:</th>
+                        <td>@Html.DisplayFor(m => m.PayDate)</td>
+                        <th align="left">  SS Payable:</th>
+                        <td>@Html.DisplayFor(m => m.SSPayableAmount)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">Med Payable:</th>
+                        <td> @Html.DisplayFor(m => m.MedPayableAmount)</td>
+                        <th align="left">Fed Status:</th>
+                        <td>@Html.DisplayFor(m => m.FederalTaxDepositStatus.FederalTaxDepositStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Fed Schedule:</th>
+                        <td> @Html.DisplayFor(m => m.FederalTaxDepositSchedule.FederalTaxDepositScheduleName)</td>
+                        <th align="left"> HACIENDA Payable:</th>
+                        <td>@Html.DisplayFor(m => m.HaciendaPayableAmount)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> HACIENDA Status:</th>
+                        <td> @Html.DisplayFor(m => m.HaciendaTaxDepositStatus.HaciendaTaxDepositStatusName)</td>
+                        <th align="left"> HACIENDA Schedule:</th>
+                        <td>@Html.DisplayFor(m => m.HaciendaTaxDepositSchedule.HaciendaTaxDepositScheduleName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> FUTA Payable:</th>
+                        <td> @Html.DisplayFor(m => m.FUTAPayableAmount)</td>
+                        <th align="left">  FUTA Status:</th>
+                        <td>@Html.DisplayFor(m => m.FUTATaxDepositStatus.FUTATaxDepositStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> FUTA Schedule:</th>
+                        <td> @Html.DisplayFor(m => m.FUTATaxDepositSchedule.FUTATaxDepositScheduleName)</td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function printDetail() {
+        var divToPrint = document.getElementById('tblPrint');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

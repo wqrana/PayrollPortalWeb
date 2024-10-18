@@ -1,0 +1,358 @@
+﻿@model TimeAide.Web.Models.Payroll
+<style>
+    .showStatus {
+        display: block;
+    }
+
+    .hideStatus {
+        display: none;
+    }
+</style>
+
+<div id="editPayrollStatus_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            @Html.Hidden("StatusTypeId", (int)ViewBag.StatusTypeId)
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Edit- @ViewBag.StatusTypeName</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Company: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Payroll: <span class="text-danger"></span></label>
+                            <div class="col-md-5 pr-0">
+                                @Html.EditorFor(model => model.PayrollName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Pay Date: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.PayDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @{ 
+                                var changedByName = "";
+                                DateTime? statusChangeDte = DateTime.Now;
+                                switch ((int)ViewBag.StatusTypeId)
+                                {
+                                    case 0:
+                                        changedByName = Model.FederalTaxStatusByName;
+                                        statusChangeDte = Model.FederalTaxStatusDate;
+                                        break;
+                                    case 1:
+                                        changedByName = Model.HaciendaTaxStatusByName;
+                                        statusChangeDte = Model.HaciendaTaxStatusDate;
+                                        break;
+                                    case 2:
+                                        changedByName = Model.FUTATaxStatusByName;
+                                        statusChangeDte = Model.FUTATaxStatusDate;
+                                        break;
+                                }
+                             }
+                            <label class="col-md-2 col-form-label">Changed By: <span class="text-danger"></span></label>
+                            <div class="col-md-4 pr-0">
+                                @Html.EditorFor(model => changedByName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">On: <span class="text-danger"></span></label>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => statusChangeDte, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        @{ var showStatus = ViewBag.StatusTypeId == 0 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">SS Payable: <span class="text-danger"></span></label>
+                                <div class="col-md-2 pr-0">
+                                    @Html.EditorFor(model => model.SSPayableAmount, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">Med. Payable: <span class="text-danger"></span></label>
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.MedPayableAmount, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                                <label class="col-md-2 col-form-label">Med. Plus Payable: <span class="text-danger"></span></label>
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.MedPlusPayableAmount, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Fed Status: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("FederalTaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">EFTPS #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FederalTaxEFTPSNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FederalTaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FederalTaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FederalTaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>                               
+                            </div>
+                        </div>
+                        @{ showStatus = ViewBag.StatusTypeId == 1 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 pr-0">Hacienda Payable: <span class="text-danger"></span></label>
+                                <div class="col-md-4 pr-0">
+                                    @Html.EditorFor(model => model.HaciendaPayableAmount, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">HACIENDA Status: <span class="text-danger">*</span></label>
+
+                                <div class="col-md-4">
+                                    @Html.DropDownList("HaciendaTaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.HaciendaTaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.HaciendaTaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.HaciendaTaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.HaciendaTaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                            @{ showStatus = ViewBag.StatusTypeId == 2 ? "showStatus" : "hideStatus";}
+                        <div class="@showStatus">
+                            <div class="form-group row">
+                                <label class="col-md-2 pr-0">FUTA Payable: <span class="text-danger"></span></label>
+                                <div class="col-md-4 pr-0">
+                                    @Html.EditorFor(model => model.FUTAPayableAmount, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">FUTA Status: <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("FUTATaxDepositStatusId", null, "Please select", new { @class = "form-control" })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Receipt #: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxReceiptNo, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0">Deposit Amt.: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxDepositAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <label class="col-md-2 col-form-label pr-0">Deposit Date: <span class="text-danger"></span></label>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FUTATaxDepositDate, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label pr-0"> Comments: <span class="text-danger"></span></label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FUTATaxComments, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnSaveEditTaxStatus" class="btn btn-primary submit-btn">Save</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        $('input[id*=Date]').each(function () {
+            $(this).datetimepicker({ format: 'MM/DD/YYYY' });
+
+        });
+        $('#FederalTaxDepositAmount,#HaciendaTaxDepositAmount,#FUTATaxDepositAmount').blur(function () {
+            debugger;
+            var taxAmount = $(this).val();
+            if (isNaN(taxAmount)) {
+                $(this).val("");
+            }
+        });
+        $("#btnSaveEditTaxStatus").click(function () {
+            debugger;
+            var statusTypeId = $('#StatusTypeId').val();
+            var IsValidated = true;
+            var fieldValidationMsg = "";
+            var obj = new Object();
+            obj.PayrollId = @Model.Id;
+            obj.StatusTypeId = statusTypeId;
+            obj.FederalTaxDepositStatusId = $("#FederalTaxDepositStatusId").val();
+            obj.HaciendaTaxDepositStatusId = $("#HaciendaTaxDepositStatusId").val();
+            obj.FUTATaxDepositStatusId = $("#FUTATaxDepositStatusId").val();
+            switch (statusTypeId) {
+                case "0": //Fed
+                   
+                    obj.TaxReferenceNo = $("#FederalTaxEFTPSNo").val();
+                    obj.TaxDepositAmount = $("#FederalTaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#FederalTaxDepositDate").val();
+                    obj.Comments = $("#FederalTaxComments").val();
+                    if (obj.FederalTaxDepositStatusId == "") {
+                        IsValidated = false;
+                    }                  
+
+                    break;
+                case "1": //Hacienda
+                    obj.TaxReferenceNo = $("#HaciendaTaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#HaciendaTaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#HaciendaTaxDepositDate").val();
+                    obj.Comments = $("#HaciendaTaxComments").val();
+                    if (obj.HaciendaTaxDepositStatusId == "") IsValidated = false;
+                    break;
+                case "2": //FUTA
+                    obj.TaxReferenceNo = $("#FUTATaxReceiptNo").val();
+                    obj.TaxDepositAmount = $("#FUTATaxDepositAmount").val();
+                    obj.TaxDepositDate = $("#FUTATaxDepositDate").val();
+                    obj.Comments = $("#FUTATaxComments").val();
+                    if (obj.FUTATaxDepositStatusId == "") IsValidated = false;
+                    break;
+            }
+            if (!IsValidated) {
+                showAlertAutoHide("", "Error", "Missing Required Field(s)");
+                return;
+            }
+            if (!validateTaxStatusRequiredFields(obj)) return;
+
+            //validate payable and deposit amount
+            if (statusTypeId == "0" && obj.FederalTaxDepositStatusId == "2") //Fed
+            {
+                debugger;
+                var sSPayable = $("#SSPayableAmount").val() == "" ? 0.00 : Number($("#SSPayableAmount").val());
+                var medPayable = $("#MedPayableAmount").val() == "" ? 0.00 : Number($("#MedPayableAmount").val());
+                var medPlusPayable = $("#MedPlusPayableAmount").val() == "" ? 0.00 : Number($("#MedPlusPayableAmount").val());
+                var totalPayable = Number(Math.abs(sSPayable + medPayable + medPlusPayable).toFixed(2));
+                var taxDepositAmount = Number(obj.TaxDepositAmount);
+                if (totalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "Deposit amount is not equal to total payables");
+                }
+            }
+            else if (statusTypeId == "1" && obj.HaciendaTaxDepositStatusId == "2") //Hacienda
+            {
+                debugger;
+                var haciendaPayable = $("#HaciendaPayableAmount").val() == "" ? 0.00 : Number($("#HaciendaPayableAmount").val());
+                var totalPayable = Number(Math.abs(haciendaPayable).toFixed(2));
+                var taxDepositAmount = Number(obj.TaxDepositAmount);
+                if (totalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "Deposit amount is not equal to total payables");
+                }
+            }
+            else if (statusTypeId == "2" && obj.FUTATaxDepositStatusId == "2") //Hacienda
+            {
+                debugger;
+                var fUTAPayable = $("#FUTAPayableAmount").val() == "" ? 0.00 : Number($("#FUTAPayableAmount").val());
+                var totalPayable = Number(Math.abs(fUTAPayable).toFixed(2));
+                var taxDepositAmount = Number(obj.TaxDepositAmount);
+                if (totalPayable !== taxDepositAmount) {
+                    showAlertAutoHide("", "Error", "Deposit amount is not equal to total payables");
+                }
+            }
+
+            SaveEditTaxStatus(obj);
+
+        });
+
+    });
+    function validateTaxStatusRequiredFields(obj) {
+        var IsValidated = true;
+        var fieldValidationMsg = "Missing Required Status Field(s) ";
+        debugger;
+        switch (obj.StatusTypeId) {
+            case "0": //Fed                             
+
+                if (obj.FederalTaxDepositStatusId == "2") {
+                    if (obj.TaxReferenceNo == "") {
+                        fieldValidationMsg += "[EFTPSNo] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositAmount == "") {
+                        fieldValidationMsg += "[DepositAmount] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositDate == "") {
+                        fieldValidationMsg += "[Deposit Date] ";
+                        IsValidated = false;
+                    }                   
+                }
+                break;
+            case "1": //Hacienda
+                if (obj.HaciendaTaxDepositStatusId == "2") {
+
+                    if (obj.TaxReferenceNo == "") {
+                        fieldValidationMsg += "[ReceiptNo] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositAmount == "") {
+                        fieldValidationMsg += "[DepositAmount] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositDate == "") {
+                        fieldValidationMsg += "[Deposit Date] ";
+                        IsValidated = false;
+                    }
+                }
+                break;
+            case "2": //FUTA               
+                if (obj.FUTATaxDepositStatusId == "2") {
+                    if (obj.TaxReferenceNo == "") {
+                        fieldValidationMsg += "[ReceiptNo] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositAmount == "") {
+                        fieldValidationMsg += "[DepositAmount] ";
+                        IsValidated = false;
+                    }
+                    if (obj.TaxDepositDate == "") {
+                        fieldValidationMsg += "[Deposit Date] ";
+                        IsValidated = false;
+                    }
+                }
+                break;
+        }
+        if (!IsValidated) {
+            showAlertAutoHide("", "Error", fieldValidationMsg);           
+        }
+
+        return IsValidated;
+    }
+</script>

@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    iframe {
+        /*width: 100%;*/
+        padding-left: 10px;
+        padding-top: 5px;
+        max-height: 600px;
+    }
+
+    .divReportView {
+        border: .5px #eaeaea solid;
+        min-height: 650px;
+        /* margin-left: 2%;*/
+    }
+
+    .showFilter {
+        display: block;
+    }
+
+    .hideFilter {
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Reports</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Reports</li>
+            </ul>
+            <div class="alert" style="display:none;" id="reportIndexPageAlert">
+                <a href="javascript:void(0)" class="close" id="alertDismiss">&times;</a>
+                <strong>Alert!</strong><span></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Filter Section -->
+<div>
+    <a href="javascript:void(0);" id="filterShowHideBtn">Hide Filter(s)</a>
+</div>
+<div class="row filter-row" id="divFilter">
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("CompanyId", null, "Please Select", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Company</label>
+        </div>
+    </div>
+    @{ var fromDD = ((int)ViewBag.PayrollFromDD) * -1;
+        var toDD = ((int)ViewBag.PayrollToDD);
+    }
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            <input id="ReportFromDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(fromDD)">
+            <label class="focus-label">From Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            <input id="ReportToDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(toDD)">
+            <label class="focus-label">To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-4 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("ReportId", null, "Please Select", new { @class = "select floating searchableDDL" })
+            <label class="focus-label">Report</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-1">
+        <a href="javascript:runReport();" class="btn btn-success btn-block"> Apply </a>
+    </div>
+</div>
+<hr class="mt-1 mb-1" />
+
+<!--Report Display -->
+
+<div id="divLoadingReport" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="18" height="18" />
+    Loading Report...
+</div>
+<div class="divReportView" id="divReportView">
+</div>
+
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+        $('#divLoadingReport').hide();
+        $(".searchableDDL").select2();
+        $(".select2-container").css("width", "100%");
+        $('#filterShowHideBtn').click(function () {
+            debugger;
+
+            switch ($(this).text()) {
+
+                case 'Hide Filter(s)':
+                    $('#divFilter').hide();
+                    $('#filterShowHideBtn').text('Show Filter(s)')
+                    break;
+                case 'Show Filter(s)':
+                    $('#divFilter').show();
+                    $('#filterShowHideBtn').text('Hide Filter(s)')
+                    break;
+            }
+
+        });
+    });
+
+    function runReport() {
+        debugger;
+        var isRequiredValidated = 0;       
+        var message = "";
+        var filterObj = new Object();
+        filterObj.ReportId = $('#ReportId').val();
+        filterObj.CompanyId = $('#CompanyId').val();
+        filterObj.CompanyName = $("#CompanyId option:selected").text();
+        filterObj.FromDate = $('#ReportFromDate').val();
+        filterObj.ToDate = $('#ReportToDate').val();
+
+        if (filterObj != null) {
+            isRequiredValidated += filterObj.ReportId .trim().length > 0 ? 1 : 0;
+            isRequiredValidated += filterObj.CompanyId .trim().length > 0 ? 1 : 0;           
+            isRequiredValidated += filterObj.FromDate.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += filterObj.ToDate.trim().length > 0 ? 1 : 0;           
+
+            if (isRequiredValidated != 4) {              
+                message = " Missing filter(s) selection";
+                showAlertAutoHide("#", 'Error', message);
+                return;
+            }
+        }
+
+        $('#divLoadingReport').show();
+        $("#divReportView").html('');
+        $.ajax({
+            type: "POST",
+            url: "/Reports/LocalReportView",
+            data: JSON.stringify(filterObj),
+            contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data) {
+                debugger;
+                //console.log(data);
+                $("#divReportView").html(data);
+
+            },
+            error: function (request, status, error) {
+                alert('Error in in runing  report data');
+                return false;
+            }
+        });
+    }
+
+
+</script>

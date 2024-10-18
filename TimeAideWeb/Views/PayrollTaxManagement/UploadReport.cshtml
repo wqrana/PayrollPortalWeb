@@ -1,0 +1,140 @@
+﻿@model TimeAide.Web.Models.Payroll
+<style>
+    .files input {
+        outline: 2px dashed #92b0b3;
+        outline-offset: -10px;
+        -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        transition: outline-offset .15s ease-in-out, background-color .15s linear;
+        padding: 120px 0px 85px 5%;
+        text-align: left !important;
+        margin: 0;
+        width: 100% !important;
+    }
+
+        .files input:focus {
+            outline: 2px dashed #92b0b3;
+            outline-offset: -10px;
+            -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            transition: outline-offset .15s ease-in-out, background-color .15s linear;
+            border: 1px solid #92b0b3;
+        }
+
+    .files {
+        position: relative
+    }
+
+        .files:after {
+            pointer-events: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 50px;
+            right: 0;
+            height: 56px;
+            content: "";
+            background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+            display: block;
+            margin: 0 auto;
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+    .color input {
+        background-color: #f1f1f1;
+    }
+
+    .files:before {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        right: 0;
+        height: 57px;
+        content: " or drag it here. ";
+        display: block;
+        margin: 0 auto;
+        color: #2ea591;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+    }
+</style>
+
+<div id="uploadReport_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            @Html.Hidden("ReportTypeId", (int)ViewBag.ReportTypeId)
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Upload - @ViewBag.ReportTypeName</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">Company: <span class="text-danger"></span></label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Payroll: <span class="text-danger"></span></label>
+                            <div class="col-md-5 pr-0">
+                                @Html.EditorFor(model => model.PayrollName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                            <label class="col-md-2 col-form-label">Pay Date: <span class="text-danger"></span></label>
+                            <div class="col-md-3">
+                                @Html.EditorFor(model => model.PayDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0 pl-1"> Upload Rpt: <span class="text-danger">*</span></label>
+
+                            <div class="col-md-10">
+                               
+                                <div class="form-group files">
+                                    <input type="file" class="form-control" id="uploadReportFile" accept=".docx,.doc,.pdf">
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+                    <button id="btnUploadRpt" class="btn btn-primary submit-btn">Upload</button>
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#PayDate").datetimepicker({ format: 'MM/DD/YYYY' });
+        $("#btnUploadRpt").click(function () {
+            var reportTypeId = $('#ReportTypeId').val();
+            var obj = new Object();
+            obj.PayrollId = @Model.Id;
+            obj.ReportTypeId = reportTypeId;
+            var totalFiles = document.getElementById("uploadReportFile").files.length;
+            if (totalFiles > 0) {
+                var file = document.getElementById("uploadReportFile").files[0];
+                obj.ReportFile = file;
+            }
+            else {
+                showAlertAutoHide("", "Error", "Missing Report File");
+                return
+            }
+
+            uploadReportFile(obj);
+        });
+
+    });
+</script>

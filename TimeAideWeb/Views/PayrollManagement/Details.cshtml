@@ -1,0 +1,233 @@
+﻿@model TimeAide.Web.Models.Payroll
+
+<div id="payrollDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Payroll - Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-auto float-right ml-auto">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-white" onclick='javascript:printDetail()'><i class="fa fa-print fa-lg"></i> Print</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="divPrintDetail">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Company:
+                            </label>
+                            <div class="col-md-5 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompanyName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Payroll:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayrollName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Pay Date:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayDate)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Compensations:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Compensations)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Withholdings:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Withholdings)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Contributions:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Contributions)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Direct Deposits:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.DirectDepositAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Checks:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CheckDepositAmount)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Payroll Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PayrollStatus.PayrollStatusName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Created On:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CreatedDate)
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Closed On:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.ClosedDate)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Payment Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PaymentStatus.PaymentStatusName)
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Status By:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PaymentStatusByName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                On:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.PaymentStatusDate)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Summary Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    var showHideCls = Model.PayrollSummaryRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.PayrollSummaryRptName)
+                                <div style="display:inline-block">
+                                    <a class="pl-1 @showHideCls"  title="Download" href="javascript:downloadReportFile(@Model.Id,1);"><i class="fa fa-download m-r-5"></i></a>
+                                </div>
+                                </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Payment Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    showHideCls = Model.PaymentConfirmationRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.PaymentConfirmationRptName)
+                                <div style="display:inline-block">
+                                    <a class="@showHideCls pl-1"  title="Download" href="javascript:downloadReportFile(@Model.Id,0);"><i class="fa fa-download m-r-5"></i></a>
+                                 </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+            <div style="display:none" id="tblPrint">
+                <table style="border:none;">
+                    <tr>
+                        <th colspan="4">Payroll - Detail</th>
+
+                    </tr>
+                    <tr>
+                        <th align="left">Company:</th>
+                        <td>@Html.DisplayFor(m => m.CompanyName)</td>
+                        <th align="left"> Payroll:</th>
+                        <td>@Html.DisplayFor(m => m.PayrollName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Pay Date:</th>
+                        <td>@Html.DisplayFor(m => m.PayDate)</td>
+                        <th align="left">  Compensations:</th>
+                        <td>@Html.DisplayFor(m => m.Compensations)</td>
+                    </tr>
+
+                    <tr>
+                        <th align="left"> Withholdings:</th>
+                        <td> @Html.DisplayFor(m => m.Withholdings)</td>
+                        <th align="left"> Contributions</th>
+                        <td> @Html.DisplayFor(m => m.Contributions)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Direct Deposits:</th>
+                        <td>@Html.DisplayFor(m => m.DirectDepositAmount)</td>
+                        <th align="left">  Checks:</th>
+                        <td> @Html.DisplayFor(m => m.CheckDepositAmount)</td>
+
+                    </tr>
+                    <tr>
+                        <th align="left">  Payroll Status:</th>
+                        <td>@Html.DisplayFor(m => m.PayrollStatus.PayrollStatusName)</td>
+                        <th align="left">   Created On:</th>
+                        <td> @Html.DisplayFor(m => m.CreatedDate)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Closed On</th>
+                        <td> @Html.DisplayFor(m => m.ClosedDate)</td>
+                        <th align="left">   Payment Status:</th>
+                        <td>@Html.DisplayFor(m => m.PaymentStatus.PaymentStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">   Status By:</th>
+                        <td>@Html.DisplayFor(m => m.PaymentStatusByName)</td>
+                        <th align="left">   On:</th>
+                        <td>@Html.DisplayFor(m => m.PaymentStatusDate)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">   Summary Report:</th>
+                        <td>                           
+                            @Html.DisplayFor(m => m.PayrollSummaryRptName)                            
+                        </td>
+                        <th align="left">   Payment Report:</th>
+                        <td>@Html.DisplayFor(m => m.PaymentConfirmationRptName)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function printDetail() {
+        var divToPrint = document.getElementById('tblPrint');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

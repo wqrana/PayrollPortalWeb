@@ -1,0 +1,50 @@
+﻿@using TimeAide.Common.Helpers;
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+
+            <ul>
+                <li class="menu-title">
+                    <span>Main</span>
+                </li>
+                @if (SessionHelper.IsAdminUser)
+                {
+                    <li class="submenu">
+                        <a href="#"><i class="la la-users"></i> <span>User Management </span> <span class="menu-arrow"></span></a>
+
+                        <ul style="display: none;" id="ulUserManagement">
+
+                            <li>@Html.ActionLink("User", "Index", "UserInformation")</li>
+
+                        </ul>
+                    </li>
+                }
+                <li class="">
+                    <a href="/PayrollManagement/Index"><i class="la la-dashboard"></i> <span>Payroll</span> </a>
+                </li>
+                <li class="">
+                    <a href="/PayrollTaxManagement/Index"><i class="fa fa-object-ungroup"></i> <span> Payroll Taxes</span> </a>
+                </li>
+                <li class="">
+                    <a href="/PayrollQuarterlyTaxMangement/Index"><i class="fa fa-object-group"></i> <span> Quarterly Taxes</span> </a>
+                </li>
+                <li class="">
+                    <a href="/Reports/Index"><i class="fa fa-object-ungroup"></i> <span> Reports</span> </a>
+                </li>
+                @*<li class="submenu">
+            <a href="#"><i class="la la-dashboard"></i> <span>Payroll Management </span> <span class="menu-arrow"></span></a>
+            <ul style="display: none;" id="ulUserManagement">
+
+                <li>@Html.ActionLink("Payroll", "Index", "PayrollManagement")</li>
+                <li>@Html.ActionLink("Payroll Tax", "Index", "PayrollTaxManagement")</li>
+
+            </ul>
+        </li>*@
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+<!-- /Sidebar -->

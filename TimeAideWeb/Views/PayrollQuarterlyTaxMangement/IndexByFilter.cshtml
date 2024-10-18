@@ -1,0 +1,292 @@
+﻿@model IEnumerable<TimeAide.Web.Models.PayrollQuarterlyTax>
+<style>
+    .showCls {
+        display: block;
+    }
+
+    .hideCls {
+        display: none;
+    }
+    .pendingStsCls {
+        color: orangered
+    }
+
+    .paidStsCls {
+        color: lightgreen
+    }
+</style>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblPayrollTax">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="display:none"></th>
+                    <th>Company</th>
+                    <th>Quarter</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+
+                    <th>FUTA WH</th>
+                    <th>FUTA Status</th>
+                    <th>FUTA Deposit</th>
+                    <th>FUTA Schedule</th>
+                    <th>FUTA Rpt</th>
+
+                    <th>SUTA WH</th>
+                    <th>SUTA Status</th>
+                    <th>SUTA Deposit</th>
+                    <th>SUTA Rpt</th>
+
+                    <th>SINOT WH</th>
+                    <th>SINOT Status</th>
+                    <th>SINOT Deposit</th>
+                    <th>SINOT Rpt</th>
+
+                    <th>CHOFERIL WH</th>
+                    <th>CHOFERIL Status</th>
+                    <th>CHOFERIL Deposit</th>
+                    <th>CHOFERIL Rpt</th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+            <tr>
+
+                <td>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:getPayrollTaxesDetail(@item.Id);"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+                <td style="display:none">@Html.DisplayFor(m => item.Id)</td>
+                <td>
+                    @Html.DisplayFor(m => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Quarter)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.QuarterStartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.QuarterEndDate)
+                </td>
+
+                <td> @Html.DisplayFor(m => item.FUTAWHAmount)</td>
+
+
+                <td>
+                    @{ var stsCls = "";
+                        switch (item.FUTATaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanFUTATaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.FUTATaxDepositStatus.FUTATaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,0)" class="fa fa-pencil" title="Edit Status"></a>
+                </td>
+                <td>
+                    <span id="spanFUTATaxDeposit_@item.Id">@Html.DisplayFor(m => item.FUTATaxDepositAmount)</span>
+                </td>
+
+                <td>@Html.DisplayFor(m => item.FUTATaxDepositSchedule.FUTATaxDepositScheduleName) </td>
+                @{
+                    var FutaRpt = item.FUTATaxConfirmation == null ? "Not Available" : "Available";
+                    var showHideCls = item.FUTATaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanFUTARpt_@item.Id"> @FutaRpt</span>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,0);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadFUTARpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,0);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+
+                <td>@Html.DisplayFor(m => item.SUTAWHAmount) </td>
+                <td>
+                    @{ stsCls = "";
+                        switch (item.SUTATaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanSUTATaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.SUTATaxDepositStatus.SUTATaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,1)" class="fa fa-pencil" title="Edit Status">  </a>
+                </td>
+                <td><span id="spanSUTATaxDeposit_@item.Id">@Html.DisplayFor(m => item.SUTATaxDepositAmount)</span> </td>
+                @{
+                    var SUTARpt = item.SUTATaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.SUTATaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanSUTARpt_@item.Id"> @SUTARpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,1);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                            <a id="downloadSUTARpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,1);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+                <td>@Html.DisplayFor(m => item.SINOTWHAmount)
+                <td>
+                    @{ stsCls = "";
+                        switch (item.SINOTTaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanSINOTTaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.SINOTTaxDepositStatus.SINOTTaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,2)" class="fa fa-pencil" title="Edit Status">  </a>
+                </td>
+                <td><span id="spanSINOTTaxDeposit_@item.Id">@Html.DisplayFor(m => item.SINOTTaxDepositAmount) </span></td>
+
+
+                @{
+                    var SINOTRpt = item.SINOTTaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.SINOTTaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanSINOTRpt_@item.Id"> @SINOTRpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,2);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadSINOTRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,2);"><i class="fa fa-download m-r-5"></i> Download</a>
+                        </div>
+                    </div>
+                </td>
+
+                <td>@Html.DisplayFor(m => item.CHOFERILWHAmount)
+                <td>
+                    @{ stsCls = "";
+                        switch (item.CHOFERILTaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanCHOFERILTaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.CHOFERILTaxDepositStatus.CHOFERILTaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,3)" class="fa fa-pencil" title="Edit Status">  </a>
+                </td>
+                <td><span id="spanCHOFERILTaxDeposit_@item.Id">@Html.DisplayFor(m => item.CHOFERILTaxDepositAmount) </span> </td>
+
+
+                @{
+                    var CHOFERILRpt = item.CHOFERILTaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.CHOFERILTaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanCHOFERILRpt_@item.Id"> @CHOFERILRpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,3);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadCHOFERILRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,3);"><i class="fa fa-download m-r-5"></i> Download</a>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$('#tblPayrollTax').dataTable({
+        //    "searching": true,
+        //    "order": [[2, "desc"]]
+        //});
+             $('#tblPayrollTax').DataTable({
+            "searching": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            "scrollX": true,
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            buttons: [
+
+                {
+                    extend: "excelHtml5",
+                    exportOptions: {
+                        columns: [2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 19, 20, 21],                        
+                        rows: ':visible'
+                    }
+                },
+                {
+                    extend: "print",
+                    exportOptions: {
+                        columns: [2, 3, 6, 7, 8, 11, 12, 13, 15, 16, 17, 19, 20, 21],
+                        rows: ':visible'
+                    },
+                    customize: function (win) {
+
+                        var last = null;
+                        var current = null;
+                        var bod = [];
+                        $(win.document.body)
+                            .css('font-size', '8pt');
+
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+
+                        var css = '@@page { size: landscape; }',
+                            head = win.document.head || win.document.getElementsByTagName('head')[0],
+                            style = win.document.createElement('style');
+
+                        style.type = 'text/css';
+                        style.media = 'print';
+
+                        if (style.styleSheet) {
+                            style.styleSheet.cssText = css;
+                        }
+                        else {
+                            style.appendChild(win.document.createTextNode(css));
+                        }
+
+                        head.appendChild(style);
+                    }
+                }, 'pageLength'
+            ],
+            "order": [[4, "asc"]]
+        });
+    });
+
+
+</script>
+

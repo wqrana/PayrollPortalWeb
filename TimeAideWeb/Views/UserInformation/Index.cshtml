@@ -1,0 +1,427 @@
+﻿@model IEnumerable<TimeAide.Web.Models.UserInformation>
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">User</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">User Management</li>
+                <li class="breadcrumb-item active">User</li>
+
+            </ul>
+
+            <div class="col-auto float-right ml-auto">
+                <a href="javascript:createEditApplicationUser(0);" class="btn add-btn">+ Add User</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped custom-table table-nowrap mb-0" id="tblUserList">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Login Email
+                </th>
+                <th>
+                    Employee Id
+                </th>
+                <th>
+                    User Name
+                </th>
+                <th>
+                   Role Type
+                </th>
+                <th>
+                    Status
+                </th>
+                
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td >
+                <div class="dropdown dropdown-action pl-1">
+                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(25px, 20px, 0px);">
+
+                        <a href="javascript:createEditApplicationUser(@item.Id);" class="dropdown-item" data-id=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a href="javascript:getChangePasswordByAdmin(@item.Id);" class="dropdown-item" data-id=""><i class="fa fa-user m-r-5"></i> Change Password</a>                        
+                        <a href="javascript:getApplicationUserDeleteData(@item.Id);" class="dropdown-item"><i class="fa fa-trash m-r-5"></i> Delete</a>
+                    </div>
+                </div>
+            </td>            
+            <td>
+                <a href="javascript:getApplicationUserDetail(@item.Id);">@Html.DisplayFor(modelItem => item.LoginEmail)</a>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullUserName)
+            </td>
+           
+            <td>
+                @{
+                    var userType = item.IsAdmin == true ? "Admin" : "User";
+                }
+                @Html.DisplayFor(modelItem => userType)
+            </td>
+            <td>  @Html.DisplayFor(modelItem => item.LoginStatus)</td>
+        </tr>
+        }
+
+    </table>
+</div>
+
+
+<div id="divCreateEditDelPopUp">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tblUserList').DataTable({
+            "searching": true
+        });
+       // getAppraisalRatingScaleDetail(null);
+    });
+    function getAppraisalRatingScaleDetail(scaleId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/AppraisalRatingScaleDetail/IndexByRatingScale',
+            data: { "id": scaleId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divRatingDetail").html(data);
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function createEditApplicationUser(userId) {
+        debugger;
+        var ActionMethod = userId == 0 ? "Create" : "Edit";
+        $.ajax({
+            type: "get",
+            url: '/UserInformation/' + ActionMethod,
+            data: { "id": userId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divCreateEditDelPopUp").html(data);
+                $("#ApplicationUserCreateEdit_modal").modal("show");
+
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+    function saveCreateApplicationUserData() {
+        debugger;
+     
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#UserInformationId').val();
+        dataObj.EmployeeId = $('#EmployeeId').val();
+        dataObj.FirstName = $('#FirstName').val();
+        dataObj.MiddleInitial = $('#MiddleInitial').val();
+        dataObj.FirstLastName = $('#FirstLastName').val();
+        dataObj.SecondLastName = $('#SecondLastName').val();
+        dataObj.LoginStatus = $('#LoginStatus').val();
+        dataObj.LoginEmail = $('#LoginEmail').val();
+        dataObj.LoginPassword = $('#LoginPassword').val();
+        dataObj.IsAdmin = ($('#LoginType').val()) == "0" ? false : true;
+        var selectedUserCmpStr = '';
+        var selectedUserCompanyList = $('#UserCompanyList').val();
+        if (selectedUserCompanyList.length > 0) {
+            selectedUserCmpStr = selectedUserCompanyList.length > 1 ? selectedUserCompanyList.join(',') : selectedUserCompanyList[0];
+        }
+        dataObj.SelectedUserCompanyIds = selectedUserCmpStr;
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+            //isRequiredValidated += dataObj.LoginStatus.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.LoginEmail.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.LoginPassword.trim().length > 0 ? 1 : 0;
+            if (isRequiredValidated != 6) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+            else {
+                isValidated = validateEmail(dataObj.LoginEmail);
+                if (isValidated == false) {
+                    message = " Invalid Login Email format.";
+                }
+            }
+        }
+        if (!isValidated) showAlertAutoHide("", 'Error', message);
+
+        if (isValidated) {
+            // ajax call for saving data
+            var userObj = new Object();
+            userObj.Email = dataObj.LoginEmail;
+            userObj.Password = dataObj.LoginPassword;
+            $.ajax({
+                type: "POST",
+                url: "/Account/Register",
+                data: JSON.stringify(userObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $.ajax({
+                            type: "POST",
+                            url: "/UserInformation/CreateEdit",
+                            data: JSON.stringify(dataObj),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                //debugger;
+                                if (data.status == "Success") {
+                                    $("#ApplicationUserCreateEdit_modal").modal("hide");
+                                    showAlertAutoHide("", data.status, data.message);
+                                    location.reload(true);
+                                }
+                                else {
+                                    showAlertAutoHide("", data.status, data.message);
+                                }
+                            }
+                            ,
+                            error: function (request, status, error) {
+                                showAlertAutoHide("", data.status, 'Error in saving user data');
+                                return false;
+                            }
+                        });
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", data.status, 'Error in saving data data');
+                    return false;
+                }
+            });
+            return;
+           
+        }
+    }
+    function saveEditApplicationUserData() {
+        debugger;
+        var isRequiredValidated = 0;
+        var isValidated = true;
+        var message = "";
+        var dataObj = new Object();
+        dataObj.id = $('#UserInformationId').val();
+        dataObj.EmployeeId = $('#EmployeeId').val();
+        dataObj.FirstName = $('#FirstName').val();
+        dataObj.MiddleInitial = $('#MiddleInitial').val();
+        dataObj.FirstLastName = $('#FirstLastName').val();
+        dataObj.SecondLastName = $('#SecondLastName').val();
+        dataObj.LoginStatus = $('#LoginStatus').val();
+        dataObj.IsAdmin = ($('#LoginType').val()) == "0" ? false : true;
+        var selectedUserCmpStr = '';
+        var selectedUserCompanyList = $('#UserCompanyList').val();
+        if (selectedUserCompanyList.length > 0) {
+            selectedUserCmpStr = selectedUserCompanyList.length > 1 ? selectedUserCompanyList.join(',') : selectedUserCompanyList[0];
+        }
+        dataObj.SelectedUserCompanyIds = selectedUserCmpStr;
+        if (dataObj != null) {
+            isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.FirstLastName.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.LoginStatus.trim().length > 0 ? 1 : 0;
+            isRequiredValidated += dataObj.EmployeeId.trim().length > 0 ? 1 : 0;
+
+            if (isRequiredValidated != 5) {
+                isValidated = false;
+                message = " Missing Required field(s)";
+            }
+        }
+        if (!isValidated) showAlertAutoHide("", 'Error', message);
+        if (isValidated) {
+            $.ajax({
+                type: "POST",
+                url: "/UserInformation/CreateEdit",
+                data: JSON.stringify(dataObj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //debugger;
+                    if (data.status == "Success") {
+                        $("#ApplicationUserCreateEdit_modal").modal("hide");
+                        showAlertAutoHide("", data.status, data.message);
+                        location.reload(true);
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide("", data.status, 'Error in saving user data');
+                    return false;
+                }
+            });
+        }
+    }
+    function getApplicationUserDeleteData(id) {
+        if (id != '') {
+
+            $.ajax({
+                type: "get",
+                url: '/UserInformation/Delete',
+                data: { "id": id },
+
+                success: function (data) {
+                    //debugger;
+                    $("#divCreateEditDelPopUp").html(data);
+                    $("#applicationUserDelete_modal").modal("show");
+
+                },
+                error: function () {
+                    // displayWarningMessage(data.ErrorMessage);
+                }
+            });
+        }
+    }
+    function deleteApplicationUser(id,loginEmail) {
+        debugger;
+        alertID = "#"
+        if (id != '') {
+            $.ajax({
+                type: "Post",
+                url: "/Account/Delete",
+                data: { "loginEmail": loginEmail },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data.status == "Success") {
+                        $.ajax({
+                            type: "Post",
+                            url: "/UserInformation/ConfirmDelete",
+                            data: { "id": id },
+                            dataType: "json",
+                            success: function (data) {
+                                //debugger;
+                                if (data.status == "Success") {
+                                    $("#applicationUserDelete_modal").modal("hide");
+                                    showAlertAutoHide("#", data.status, data.message);
+                                    location.reload(true);
+                                }
+                                else {
+                                    showAlertAutoHide(alertID, data.status, data.message);
+                                }
+                            }
+                            ,
+                            error: function (request, status, error) {
+                                showAlertAutoHide(alertID, "Error", error);
+                                return false;
+                            }
+                        });
+                    }
+                    else {
+                        showAlertAutoHide(alertID, data.status, data.message);
+                    }
+                }
+                ,
+                error: function (request, status, error) {
+                    showAlertAutoHide(alertID, "Error", error);
+                    return false;
+                }
+            });
+           
+        }
+    }
+    function validateEmail($email) {
+        var emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailReg.test($email);
+    }
+    function getChangePasswordByAdmin(id) {
+        $.ajax({
+            type: "get",
+            url: '/Account/ChangePasswordByAdmin',
+            data: { "id": id },
+
+            success: function (data) {
+                //debugger;
+                $("#divCreateEditDelPopUp").html(data);
+                $("#ChangePasswordByAdmin_modal").modal("show");
+
+            },
+            error: function () {
+                // displayWarningMessage(data.ErrorMessage);
+            }
+        });
+    }
+    function saveChangePasswordByAdmin() {
+        debugger;      
+        var isValidated = true;
+        var message = "";
+        var model = {
+            UserInformationId: $('#UserInformationId').val(),
+            NewPassword: $('#NewPassword').val(),
+            ConfirmPassword: $('#ConfirmPassword').val()
+        };
+        if (model.NewPassword == "") {
+            message = "Missing required field(s)"
+            isValidated = false;
+        }
+        else if (model.NewPassword != model.ConfirmPassword){
+            message = "Password and Comfirm Password should be same"
+            isValidated = false;
+        }
+
+        if (!isValidated) {
+
+            showAlertAutoHide("", "Error", message);
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: '/Account/ChangePasswordByAdmin',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            success: function (data) {
+                //debugger;
+                if (data.status == "Success") {
+                    $("#ChangePasswordByAdmin_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            }
+            ,
+            error: function (request, status, error) {
+                showAlertAutoHide("", data.status, 'Error in saving user data');
+                return false;
+            }
+        });
+    }
+</script>

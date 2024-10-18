@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TIMEAIDE_7_PSICOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="strBatchDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchCreated" Type="datetime" Nullable="false" />
+          <Property Name="intCreatedByID" Type="int" Nullable="false" />
+          <Property Name="strCreateByName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dtBatchUpdates" Type="datetime" Nullable="false" />
+          <Property Name="intBatchStatus" Type="int" Nullable="false" />
+          <Property Name="dtPayDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="intBatchType" Type="int" Nullable="false" />
+          <Property Name="intTemplateID" Type="int" Nullable="false" />
+          <Property Name="ClosedByUserID" Type="int" />
+          <Property Name="ClosedDateTime" Type="datetime" />
+          <Property Name="intPaymentStatusId" Type="int" />
+          <Property Name="strPaymentStatusByName" Type="nvarchar" MaxLength="100" />
+          <Property Name="dtPaymentStatusDate" Type="datetime" />
+          <Property Name="varPaymentConfirmation" Type="varbinary(max)" />
+          <Property Name="strPaymentConfirmationRptName" Type="nvarchar" MaxLength="100" />
+          <Property Name="varCompanyPayrollSummary" Type="varbinary(max)" />
+          <Property Name="strPayrollSummaryRptName" Type="nvarchar" MaxLength="100" />
+          <Property Name="intFederalTaxDepositScheduleId" Type="int" />
+          <Property Name="intFederalTaxDepositStatusId" Type="int" />
+          <Property Name="decFederalTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtFederalTaxDepositDate" Type="datetime" />
+          <Property Name="strFederalTaxEFTPSNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtFederalTaxStatusDate" Type="datetime" />
+          <Property Name="strFederalTaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varFederalTaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strFederalTaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intHaciendaTaxDepositScheduleId" Type="int" />
+          <Property Name="intHaciendaTaxDepositStatusId" Type="int" />
+          <Property Name="decHaciendaTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtHaciendaTaxDepositDate" Type="datetime" />
+          <Property Name="strHaciendaTaxReceiptNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtHaciendaTaxStatusDate" Type="datetime" />
+          <Property Name="strHaciendaTaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varHaciendaTaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strHaciendaTaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intFUTATaxDepositScheduleId" Type="int" />
+          <Property Name="intFUTATaxDepositStatusId" Type="int" />
+          <Property Name="decFUTATaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="dtFUTATaxDepositDate" Type="datetime" />
+          <Property Name="strFUTATaxReceiptNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="dtFUTATaxStatusDate" Type="datetime" />
+          <Property Name="strFUTATaxStatusByName" Type="nvarchar" MaxLength="50" />
+          <Property Name="varFUTATaxConfirmation" Type="varbinary(max)" />
+          <Property Name="strFUTATaxRptName" Type="nvarchar" MaxLength="50" />
+          <Property Name="intACHSentCount" Type="int" Nullable="false" />
+          <Property Name="ACHFileName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tCompany">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" />
+          <Property Name="nPayRuleID" Type="int" />
+          <Property Name="nSchedID" Type="int" />
+        </EntityType>
+        <Function Name="spPay_rpt_CuadreQuarterlyReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PayrollCompany" Type="nvarchar" Mode="In" />
+          <Parameter Name="StartDate" Type="date" Mode="In" />
+          <Parameter Name="EndDate" Type="date" Mode="In" />
+        </Function>
+        <EntityContainer Name="TIMEAIDE_7_PSICOModelStoreContainer">
+          <EntitySet Name="tblBatch" EntityType="Self.tblBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tCompany" EntityType="Self.tCompany" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TIMEAIDE_7_PSICOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tCompany">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="nPayRuleID" Type="Int32" />
+          <Property Name="nSchedID" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="TimeAideWindowContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tCompanies" EntityType="Self.tCompany" />
+          <EntitySet Name="tblBatch" EntityType="TIMEAIDE_7_PSICOModel.tblBatch" />
+          <FunctionImport Name="spPay_rpt_CuadreQuarterlyReport" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spPay_rpt_CuadreQuarterlyReport_Result)">
+            <Parameter Name="PayrollCompany" Mode="In" Type="String" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="tblBatch">
+          <Key>
+            <PropertyRef Name="strBatchID" />
+          </Key>
+          <Property Name="strBatchID" Type="Guid" Nullable="false" />
+          <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="strBatchDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+          <Property Name="strCreateByName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+          <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="intBatchType" Type="Int32" Nullable="false" />
+          <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+          <Property Name="intPaymentStatusId" Type="Int32" />
+          <Property Name="strPaymentStatusByName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="dtPaymentStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="varPaymentConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strPaymentConfirmationRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="varCompanyPayrollSummary" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strPayrollSummaryRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ClosedByUserID" Type="Int32" />
+          <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="intFederalTaxDepositScheduleId" Type="Int32" />
+          <Property Name="intFederalTaxDepositStatusId" Type="Int32" />
+          <Property Name="decFederalTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtFederalTaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strFederalTaxEFTPSNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtFederalTaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strFederalTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varFederalTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strFederalTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intHaciendaTaxDepositScheduleId" Type="Int32" />
+          <Property Name="intHaciendaTaxDepositStatusId" Type="Int32" />
+          <Property Name="decHaciendaTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtHaciendaTaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strHaciendaTaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtHaciendaTaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strHaciendaTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varHaciendaTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strHaciendaTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intFUTATaxDepositScheduleId" Type="Int32" />
+          <Property Name="intFUTATaxDepositStatusId" Type="Int32" />
+          <Property Name="decFUTATaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="dtFUTATaxDepositDate" Type="DateTime" Precision="3" />
+          <Property Name="strFUTATaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="dtFUTATaxStatusDate" Type="DateTime" Precision="3" />
+          <Property Name="strFUTATaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="varFUTATaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="strFUTATaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intACHSentCount" Type="Int32" Nullable="false" />
+          <Property Name="ACHFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="spPay_rpt_CuadreQuarterlyReport_Result">
+          <Property Type="Decimal" Name="K401_SALARIOS_EXENTOS" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="DEPOSITO_FED" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="Decimal" Name="DEPOSITO_PR" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="String" Name="EFMLAE" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="EFTPS_FED" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="EPSLA" Nullable="false" MaxLength="1" />
+          <Property Type="Decimal" Name="EXENTO_26" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="DateTime" Name="FECHA_DEPOSITO_FED" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FECHA_DEPOSITO_PR" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FECHA_NOMINA" Nullable="false" Precision="16" />
+          <Property Type="String" Name="FED_USA" Nullable="false" MaxLength="1" />
+          <Property Type="Decimal" Name="FICA_MED" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="FICA_MED_PLUS" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="FICA_SS" Nullable="false" Precision="19" Scale="2" />
+          <Property Type="Decimal" Name="FUTA" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="FUTA_DEPOSIT" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="String" Name="FUTA_RECEIPT" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="HACIENDA_PR" Nullable="false" Precision="18" Scale="5" />
+          <Property Type="String" Name="HACIENDA_RECEIPT" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="INCOME_TAX_RETENIDO" Nullable="false" Precision="19" Scale="2" />
+          <Property Type="String" Name="MES" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NOMBRE_NOMINA" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="SALARIO_TRIBUTABLES" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="SALARIOS_MED" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SALARIOS_MED_PLUS" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SALARIOS_SS" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Guid" Name="strBatchID" Nullable="false" />
+          <Property Type="Decimal" Name="TOTAL_FED" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="TOTAL_SALARIOS" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TIMEAIDE_7_PSICOModelStoreContainer" CdmEntityContainer="TimeAideWindowContext">
+          <EntitySetMapping Name="tCompanies">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tCompany">
+              <MappingFragment StoreEntitySet="tCompany">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="nPayRuleID" ColumnName="nPayRuleID" />
+                <ScalarProperty Name="nSchedID" ColumnName="nSchedID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBatch">
+            <EntityTypeMapping TypeName="TIMEAIDE_7_PSICOModel.tblBatch">
+              <MappingFragment StoreEntitySet="tblBatch">
+                <ScalarProperty Name="ACHFileName" ColumnName="ACHFileName" />
+                <ScalarProperty Name="intACHSentCount" ColumnName="intACHSentCount" />
+                <ScalarProperty Name="strFUTATaxRptName" ColumnName="strFUTATaxRptName" />
+                <ScalarProperty Name="varFUTATaxConfirmation" ColumnName="varFUTATaxConfirmation" />
+                <ScalarProperty Name="strFUTATaxStatusByName" ColumnName="strFUTATaxStatusByName" />
+                <ScalarProperty Name="dtFUTATaxStatusDate" ColumnName="dtFUTATaxStatusDate" />
+                <ScalarProperty Name="strFUTATaxReceiptNo" ColumnName="strFUTATaxReceiptNo" />
+                <ScalarProperty Name="dtFUTATaxDepositDate" ColumnName="dtFUTATaxDepositDate" />
+                <ScalarProperty Name="decFUTATaxDepositAmount" ColumnName="decFUTATaxDepositAmount" />
+                <ScalarProperty Name="intFUTATaxDepositStatusId" ColumnName="intFUTATaxDepositStatusId" />
+                <ScalarProperty Name="intFUTATaxDepositScheduleId" ColumnName="intFUTATaxDepositScheduleId" />
+                <ScalarProperty Name="strHaciendaTaxRptName" ColumnName="strHaciendaTaxRptName" />
+                <ScalarProperty Name="varHaciendaTaxConfirmation" ColumnName="varHaciendaTaxConfirmation" />
+                <ScalarProperty Name="strHaciendaTaxStatusByName" ColumnName="strHaciendaTaxStatusByName" />
+                <ScalarProperty Name="dtHaciendaTaxStatusDate" ColumnName="dtHaciendaTaxStatusDate" />
+                <ScalarProperty Name="strHaciendaTaxReceiptNo" ColumnName="strHaciendaTaxReceiptNo" />
+                <ScalarProperty Name="dtHaciendaTaxDepositDate" ColumnName="dtHaciendaTaxDepositDate" />
+                <ScalarProperty Name="decHaciendaTaxDepositAmount" ColumnName="decHaciendaTaxDepositAmount" />
+                <ScalarProperty Name="intHaciendaTaxDepositStatusId" ColumnName="intHaciendaTaxDepositStatusId" />
+                <ScalarProperty Name="intHaciendaTaxDepositScheduleId" ColumnName="intHaciendaTaxDepositScheduleId" />
+                <ScalarProperty Name="strFederalTaxRptName" ColumnName="strFederalTaxRptName" />
+                <ScalarProperty Name="varFederalTaxConfirmation" ColumnName="varFederalTaxConfirmation" />
+                <ScalarProperty Name="strFederalTaxStatusByName" ColumnName="strFederalTaxStatusByName" />
+                <ScalarProperty Name="dtFederalTaxStatusDate" ColumnName="dtFederalTaxStatusDate" />
+                <ScalarProperty Name="strFederalTaxEFTPSNo" ColumnName="strFederalTaxEFTPSNo" />
+                <ScalarProperty Name="dtFederalTaxDepositDate" ColumnName="dtFederalTaxDepositDate" />
+                <ScalarProperty Name="decFederalTaxDepositAmount" ColumnName="decFederalTaxDepositAmount" />
+                <ScalarProperty Name="intFederalTaxDepositStatusId" ColumnName="intFederalTaxDepositStatusId" />
+                <ScalarProperty Name="intFederalTaxDepositScheduleId" ColumnName="intFederalTaxDepositScheduleId" />
+                <ScalarProperty Name="ClosedDateTime" ColumnName="ClosedDateTime" />
+                <ScalarProperty Name="ClosedByUserID" ColumnName="ClosedByUserID" />
+                <ScalarProperty Name="strPayrollSummaryRptName" ColumnName="strPayrollSummaryRptName" />
+                <ScalarProperty Name="varCompanyPayrollSummary" ColumnName="varCompanyPayrollSummary" />
+                <ScalarProperty Name="strPaymentConfirmationRptName" ColumnName="strPaymentConfirmationRptName" />
+                <ScalarProperty Name="varPaymentConfirmation" ColumnName="varPaymentConfirmation" />
+                <ScalarProperty Name="dtPaymentStatusDate" ColumnName="dtPaymentStatusDate" />
+                <ScalarProperty Name="strPaymentStatusByName" ColumnName="strPaymentStatusByName" />
+                <ScalarProperty Name="intPaymentStatusId" ColumnName="intPaymentStatusId" />
+                <ScalarProperty Name="intTemplateID" ColumnName="intTemplateID" />
+                <ScalarProperty Name="intBatchType" ColumnName="intBatchType" />
+                <ScalarProperty Name="dtPayDate" ColumnName="dtPayDate" />
+                <ScalarProperty Name="intBatchStatus" ColumnName="intBatchStatus" />
+                <ScalarProperty Name="dtBatchUpdates" ColumnName="dtBatchUpdates" />
+                <ScalarProperty Name="strCreateByName" ColumnName="strCreateByName" />
+                <ScalarProperty Name="intCreatedByID" ColumnName="intCreatedByID" />
+                <ScalarProperty Name="dtBatchCreated" ColumnName="dtBatchCreated" />
+                <ScalarProperty Name="strBatchDescription" ColumnName="strBatchDescription" />
+                <ScalarProperty Name="strCompanyName" ColumnName="strCompanyName" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spPay_rpt_CuadreQuarterlyReport" FunctionName="TIMEAIDE_7_PSICOModel.Store.spPay_rpt_CuadreQuarterlyReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TIMEAIDE_7_PSICOModel.spPay_rpt_CuadreQuarterlyReport_Result">
+                <ScalarProperty Name="K401_SALARIOS_EXENTOS" ColumnName="K401_SALARIOS_EXENTOS" />
+                <ScalarProperty Name="DEPOSITO_FED" ColumnName="DEPOSITO_FED" />
+                <ScalarProperty Name="DEPOSITO_PR" ColumnName="DEPOSITO_PR" />
+                <ScalarProperty Name="EFMLAE" ColumnName="EFMLAE" />
+                <ScalarProperty Name="EFTPS_FED" ColumnName="EFTPS_FED" />
+                <ScalarProperty Name="EPSLA" ColumnName="EPSLA" />
+                <ScalarProperty Name="EXENTO_26" ColumnName="EXENTO_26" />
+                <ScalarProperty Name="FECHA_DEPOSITO_FED" ColumnName="FECHA_DEPOSITO_FED" />
+                <ScalarProperty Name="FECHA_DEPOSITO_PR" ColumnName="FECHA_DEPOSITO_PR" />
+                <ScalarProperty Name="FECHA_NOMINA" ColumnName="FECHA_NOMINA" />
+                <ScalarProperty Name="FED_USA" ColumnName="FED_USA" />
+                <ScalarProperty Name="FICA_MED" ColumnName="FICA_MED" />
+                <ScalarProperty Name="FICA_MED_PLUS" ColumnName="FICA_MED_PLUS" />
+                <ScalarProperty Name="FICA_SS" ColumnName="FICA_SS" />
+                <ScalarProperty Name="FUTA" ColumnName="FUTA" />
+                <ScalarProperty Name="FUTA_DEPOSIT" ColumnName="FUTA_DEPOSIT" />
+                <ScalarProperty Name="FUTA_RECEIPT" ColumnName="FUTA_RECEIPT" />
+                <ScalarProperty Name="HACIENDA_PR" ColumnName="HACIENDA_PR" />
+                <ScalarProperty Name="HACIENDA_RECEIPT" ColumnName="HACIENDA_RECEIPT" />
+                <ScalarProperty Name="INCOME_TAX_RETENIDO" ColumnName="INCOME_TAX_RETENIDO" />
+                <ScalarProperty Name="MES" ColumnName="MES" />
+                <ScalarProperty Name="NOMBRE_NOMINA" ColumnName="NOMBRE_NOMINA" />
+                <ScalarProperty Name="SALARIO_TRIBUTABLES" ColumnName="SALARIO_TRIBUTABLES" />
+                <ScalarProperty Name="SALARIOS_MED" ColumnName="SALARIOS_MED" />
+                <ScalarProperty Name="SALARIOS_MED_PLUS" ColumnName="SALARIOS_MED_PLUS" />
+                <ScalarProperty Name="SALARIOS_SS" ColumnName="SALARIOS_SS" />
+                <ScalarProperty Name="strBatchID" ColumnName="strBatchID" />
+                <ScalarProperty Name="TOTAL_FED" ColumnName="TOTAL_FED" />
+                <ScalarProperty Name="TOTAL_SALARIOS" ColumnName="TOTAL_SALARIOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,130 @@
+﻿ </table>
+    </div>
+</div>
+<hr />
+<footer>
+    <p> @DateTime.Now.Year &copy; Identech, Inc. All rights reserved.</p>
+</footer>
+<script type="text/javascript">
+    $('*[id*=anchorDetail]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Details',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+    $('*[id*=anchorEdit]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Edit',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+   $('*[id*=anchorDelete]').click(function () {
+    //debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Delete',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function () {
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+
+$(".anchorAdd").click(function () {
+    debugger;
+    var $buttonClicked = $(this);
+    var id = $buttonClicked.attr('data-id');
+    var options = { "backdrop": "static", keyboard: true };
+    $.ajax({
+        type: "GET",
+        url: '/@ViewBag.FormName/Create',
+        contentType: "application/json; charset=utf-8",
+        data: { "Id": id },
+        datatype: "json",
+        success: function (data) {
+            //debugger;
+            $('#myModalContent').html(data);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert("Dynamic content load failed.");
+        }
+    });
+});
+</script>
+<style>
+    p {
+        text-align: center;
+    }
+
+    dt {
+        display: inline;
+        width: 25%;
+    }
+
+        dt::after {
+            content: ":";
+        }
+
+    dd {
+        display: inline;
+        color: #909090
+    }
+</style>
+<style>
+    .modal-dialog {
+        width: 700px;
+        max-width: 700px !important;
+    }
+</style>

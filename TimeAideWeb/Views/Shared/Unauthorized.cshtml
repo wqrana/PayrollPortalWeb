@@ -1,0 +1,24 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Access Denied";
+    Layout = "~/Views/Shared/_LayoutError.cshtml";
+}
+
+@*<h1 class="text-danger" style="text-align:center">Error</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+@if (Model.Exception != null)
+{
+    <h2 class="text-danger">@Html.Raw(Model.Exception.Message)</h2>
+}*@
+
+    <div class="error-box">
+        <h4>Unauthorized Access</h4>
+        @*<h3><i class="fa fa-warning"></i> Oops! An error occurred while processing your requested Page!</h3>*@
+        @if (Model.Exception != null)
+        {
+            <p class="text-danger">@Html.Raw(Model.Exception.Message)</p>
+        }
+            <!--  <a href="index.html" class="btn btn-custom">Back to Home</a>-->
+        @Html.ActionLink("Back to Home", "index", "home", null, new { @class = "btn btn-custom" })
+    </div>

@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "Quarterly Taxes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header mb-2">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Quarterly Taxes</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Quarterly Taxes</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="javascript:void(0);" id="filterShowHideBtn">Hide Filter(s)</a>
+</div>
+<div class="row filter-row" id="divFilter">
+    <div class="col-sm-6 col-md-4 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("CompanyId", null, "All", new { @class = "select floating searchableDDL", @id = "CompanyIdF" })
+            <label class="focus-label">Company</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("QuarterId", null, "All", new { @class = "select floating", @id = "QuarterIdF" })
+            <label class="focus-label">Quarter</label>
+        </div>
+    </div>
+    @{ var fromDD = ((int)ViewBag.PayrollTaxesFromDD) * -1;}
+    @*<div class="col-sm-4 col-md-2 pr-0">
+            <div class="form-group form-focus select-focus">
+                <input id="FromPayDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(fromDD)">
+                <label class="focus-label">From Date</label>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-2 pr-0">
+            <div class="form-group form-focus select-focus">
+                <input id="ToPayDate" type="datetime" class="form-control floating" value="@DateTime.Today">
+                <label class="focus-label">To Date</label>
+            </div>
+        </div>*@
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("FUTATaxDepositStatusId", null, "All", new { @class = "select floating", @id = "FUTATaxDepositStatusIdF" })
+            <label class="focus-label">FUTA Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("FUTATaxDepositScheduleId", null, "All", new { @class = "select floating", @id = "FUTATaxDepositScheduleIdF" })
+            <label class="focus-label">FUTA Schedule</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("SUTATaxDepositStatusId", null, "All", new { @class = "select floating", @id = "SUTATaxDepositStatusIdF" })
+            <label class="focus-label">SUTA Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("SINOTTaxDepositStatusId", null, "All", new { @class = "select floating", @id = "SINOTTaxDepositStatusIdF" })
+            <label class="focus-label">SINOT Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("CHOFERILTaxDepositStatusId", null, "All", new { @class = "select floating", @id = "CHOFERILTaxDepositStatusIdF" })
+            <label class="focus-label">CHOFERIL Status</label>
+        </div>
+    </div>
+
+    @*<div class="col-md-8"></div>*@
+    <div class="col-md-2">
+        <a href="javascript:getQuarterlyTaxRecordList();" class="btn btn-success btn-block"> Apply Filter </a>
+    </div>
+</div>
+<hr class="mt-1 mb-1" />
+
+<div id="divLoadingPayroll" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+
+<h3>Quarterly Taxes List </h3>
+<div id="divPayrollTaxListView">
+
+</div>
+
+
+<div id="divEditUploadPopup">
+</div>
+<script>
+    $(document).ready(function () {
+        $('#divLoadingPayroll').hide();
+        getQuarterlyTaxRecordList();
+        $('#filterShowHideBtn').click(function () {
+            debugger;
+
+            switch ($(this).text()) {
+
+                case 'Hide Filter(s)':
+                    $('#divFilter').hide();
+                    $('#filterShowHideBtn').text('Show Filter(s)')
+                    break;
+                case 'Show Filter(s)':
+                    $('#divFilter').show();
+                    $('#filterShowHideBtn').text('Hide Filter(s)')
+                    break;
+            }
+
+        });
+    });
+    function getQuarterlyTaxRecordList() {
+        $('#divLoadingPayroll').show();
+        $(".searchableDDL").select2();
+        $(".select2-container").css("width", "100%");
+        debugger;
+        var obj = new Object();
+        obj.CompanyId = $('#CompanyIdF').val();
+        //obj.FromPayDate = $('#FromPayDate').val();
+        //obj.ToPayDate = $('#ToPayDate').val();
+        obj.Quarter = $('#QuarterIdF').val();
+        obj.FUTATaxDepositStatusId = $('#FUTATaxDepositStatusIdF').val();
+        obj.FUTATaxDepositScheduleId = $('#FUTATaxDepositScheduleIdF').val();
+
+        obj.SUTATaxDepositStatusId = $('#SUTATaxDepositStatusIdF').val();
+        obj.SINOTTaxDepositStatusId = $('#SINOTTaxDepositStatusIdF').val();
+        obj.CHOFERILTaxDepositStatusId = $('#CHOFERILTaxDepositStatusIdF').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/PayrollQuarterlyTaxMangement/IndexByFilter',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayrollTaxListView").html(data);
+                $('#divLoadingPayroll').hide();
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function AjaxEditTaxStatus(id, statusTypeId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollQuarterlyTaxMangement/AjaxEditTaxStatus',
+            data: { "id": id, "statusTypeId": statusTypeId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#editQuarterlyTaxStatus_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function SaveEditTaxStatus(obj) {
+        $.ajax({
+            type: "POST",
+            url: '/PayrollQuarterlyTaxMangement/SaveEditTaxStatus',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    debugger;
+                    $("#editQuarterlyTaxStatus_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    //getPayrollList();
+                    var statusElement = "#";
+                    var statusColSeq = -1;                  
+                    var depositAmtElement = "#";
+                    var depositAmtColSeq = -1;
+                    if (obj.StatusTypeId == 0) {
+                        statusElement += "spanFUTATaxSt_" + obj.Id; //TaxDeposit
+                        depositAmtElement += "spanFUTATaxDeposit_" + obj.Id;
+                        statusColSeq = 7;
+                        depositAmtColSeq = 8;
+                    }
+                    else if (obj.StatusTypeId == 1) {
+                        statusElement += "spanSUTATaxSt_" + obj.Id;
+                        depositAmtElement += "spanSUTATaxDeposit_" + obj.Id;
+                        statusColSeq = 12;
+                        depositAmtColSeq = 13;
+                    }
+                    else if (obj.StatusTypeId == 2) {
+                        statusElement += "spanSINOTTaxSt_" + obj.Id;
+                        depositAmtElement += "spanSINOTTaxDeposit_" + obj.Id;
+                        statusColSeq = 16;
+                        depositAmtColSeq = 17;
+                    }
+                    else if (obj.StatusTypeId == 3) {
+                        statusElement += "spanCHOFERILTaxSt_" + obj.Id;
+                        depositAmtElement += "spanCHOFERILTaxDeposit_" + obj.Id;
+                        statusColSeq = 20;
+                        depositAmtColSeq = 21;
+                    }
+
+                    $(statusElement).text(data.retVal);
+                    $(depositAmtElement).text(data.retDepositAmt == null ? null : data.retDepositAmt.toFixed(2));
+
+                    $(statusElement).removeClass("pendingStsCls").removeClass("paidStsCls");
+                    debugger;
+                    switch (data.retStatusId) {
+                        case 1:
+                            $(statusElement).addClass("pendingStsCls");
+                            break;
+                        case 2:
+                            $(statusElement).addClass("paidStsCls");
+                            break;
+                    }
+                    debugger;
+                    var changedStsTdHtml = $(statusElement).parents("td").html();
+                    var changedDepositTdHtml = $(depositAmtElement).parents("td").html();
+                    var table = $('#tblPayrollTax').DataTable();
+                    var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+                        debugger;
+                        return table.cell(rowIdx, 1).data() == obj.Id ? true : false;
+                    });
+                    table.cell(selectedRow[0], statusColSeq).data(changedStsTdHtml);
+                    table.cell(selectedRow[0], depositAmtColSeq).data(changedDepositTdHtml);
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function AjaxUploadFile(id, reportTypeId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollQuarterlyTaxMangement/AjaxUploadReportFile',
+            data: { "id": id, "reportTypeId": reportTypeId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#uploadReport_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+
+    function uploadReportFile(obj) {
+        debugger;
+        var formData = new FormData();
+        formData.append("Id", obj.Id);
+        formData.append("ReportTypeId", obj.ReportTypeId);
+        formData.append("ReportFile", obj.ReportFile);
+        $.ajax({
+            type: "POST",
+            url: '/PayrollQuarterlyTaxMangement/UploadReportFile',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                 debugger;
+                if (data.status == "Success") {
+                    showAlertAutoHide("", data.status, data.message);
+                    $("#uploadReport_modal").modal("hide");
+                    var rptStatus = "#";
+                    var rptDownload = "#";
+                    if (obj.ReportTypeId == 0) {
+                        rptStatus += "spanFUTARpt_" + obj.Id;
+                        rptDownload += "downloadFUTARpt_" + obj.Id;
+                    }
+                    else if (obj.ReportTypeId == 1) {
+                        rptStatus += "spanSUTARpt_" + obj.Id;
+                        rptDownload += "downloadSUTARpt_" + obj.Id;
+                    }
+                    else if (obj.ReportTypeId == 2) {
+                        rptStatus += "spanSINOTRpt_" + obj.Id;
+                        rptDownload += "downloadSINOTRpt_" + obj.Id;
+                    }
+                    else if (obj.ReportTypeId == 3) {
+                        rptStatus += "spanCHOFERILRpt_" + obj.Id;
+                        rptDownload += "downloadCHOFERILRpt_" + obj.Id;
+                    }
+                    $(rptStatus).text("Available");
+                    $(rptDownload).removeClass("hideCls").addClass("showCls");
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            },
+            error: function (error) {
+            }
+        });
+
+    }
+    function downloadReportFile(id, reportTypeId) {
+        debugger;
+        window.location.href = "/PayrollQuarterlyTaxMangement/DownloadReportFile?id=" + id + "&reportTypeId=" + reportTypeId;
+
+    }
+    function getPayrollTaxesDetail(id) {
+
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollQuarterlyTaxMangement/Details',
+            data: {
+                "id": id },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#payrollTaxesDetail_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+   
+</script>

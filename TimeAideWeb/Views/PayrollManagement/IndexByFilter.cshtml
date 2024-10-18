@@ -1,0 +1,221 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Payroll>
+<style>
+    .showCls {
+        display: block;
+    }
+    .hideCls {
+        display: none;
+    }
+    .pendingStsCls{
+        color:orangered
+    }
+    .paidStsCls {
+        color: lightgreen
+    }
+</style>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblPayroll">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="display:none"></th>
+                    <th>Company</th>
+                    <th>Payroll</th>
+                    <th>Pay Date</th>
+                    <th>Payment Status</th>
+                    <th>Payment Rpt</th>
+                    <th>Summary Rpt</th>
+                    <th>Schedule</th>
+                    <th>Start Date</th>
+                    <th>End Date </th>
+                    <th>Payroll Status</th>
+                    <th>Payroll Type</th>
+                    <th>Direct Deposits</th>
+                    <th>Checks</th>
+                    <th>Compensations</th>
+                    <th>Withholdings</th>
+                    <th>Contributions</th>
+
+
+                    <th>Closed Date</th>
+                    <th>Closed By</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:getPayrollDetail(@item.Id);"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+                <td style="display:none">@Html.DisplayFor(m => item.Id)</td>
+                <td>
+                    @Html.DisplayFor(m => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PayrollName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PayDate)
+                </td>
+                <td>
+                    @{ var stsCls = "";
+                        switch (item.PaymentStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanPaymentSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.PaymentStatus.PaymentStatusName)</span>
+                    <a href="javascript:AjaxEditStatus(@item.Id,0)" class="fa fa-pencil" title="Edit Status">
+
+                    </a>
+                </td>
+                @{
+                    var paymentRpt = item.PaymentConfirmation == null ? "Not Available" : "Available";
+                    var showHideCls = item.PaymentConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanPaymentRpt_@item.Id"> @paymentRpt</span>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,0);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                            <a id="downloadPaymentRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,0);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+                @{
+                    var summaryRpt = item.CompanyPayrollSummary == null ? "Not Available" : "Available";
+                    showHideCls = item.CompanyPayrollSummary == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanPayrollRpt_@item.Id"> @summaryRpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,1);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                            <a id="downloadpayrollRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,1);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(m => item.BatchTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.EndDate)
+                </td>
+                <td>
+                    <span id="spanPayrollSt_@item.Id"> @Html.DisplayFor(m => item.PayrollStatus.PayrollStatusName) </span>
+                    @*  <a href="javascript:AjaxEditStatus(@item.Id,1)"> [Edit]  </a>*@
+
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PayrollTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.DirectDepositAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.CheckDepositAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Compensations)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Withholdings)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Contributions)
+                </td>
+
+                <td>@Html.DisplayFor(m => item.ClosedDate)</td>
+                <td>@Html.DisplayFor(m => item.ClosedByName)</td>
+            </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#tblPayroll').DataTable({
+            "searching": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            "scrollX": true,
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            buttons: [
+               
+                {
+                    extend: "excelHtml5",
+                    exportOptions: {
+                        columns: [2, 3, 4, 5, 11, 13, 14, 15, 16, 17, 18, 19],
+                        rows: ':visible'
+                    }
+                },
+                {
+                    extend: "print",
+                    exportOptions: {
+                        columns: [2, 3, 4, 5, 11, 13, 14, 15, 16, 17, 18],
+                        rows: ':visible'
+                    },
+            customize: function(win)
+            {
+ 
+                var last = null;
+                var current = null;
+                var bod = [];
+                $(win.document.body)
+                    .css('font-size', '10pt');
+                   
+
+                $(win.document.body).find('table')
+                    .addClass('compact')
+                    .css('font-size', 'inherit');
+ 
+                var css = '@@page { size: landscape; }',
+                    head = win.document.head || win.document.getElementsByTagName('head')[0],
+                    style = win.document.createElement('style');
+ 
+                style.type = 'text/css';
+                style.media = 'print';
+ 
+                if (style.styleSheet)
+                {
+                  style.styleSheet.cssText = css;
+                }
+                else
+                {
+                  style.appendChild(win.document.createTextNode(css));
+                }
+ 
+                head.appendChild(style);
+         }
+                }, 'pageLength'
+            ],
+            "order": [[2, "desc"]]
+        });
+    });
+</script>
+

@@ -1,0 +1,263 @@
+﻿@model IEnumerable<TimeAide.Web.Models.Payroll>
+<style>
+    .showCls {
+        display: block;
+    }
+
+    .hideCls {
+        display: none;
+    }
+    .pendingStsCls {
+        color: orangered
+    }
+
+    .paidStsCls {
+        color: lightgreen
+    }
+</style>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped custom-table table-nowrap mb-0" id="tblPayrollTax">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="display:none"></th>
+                    <th>Company</th>
+                    <th>Payroll</th>
+                    <th>Pay Date</th>
+                    <th>Summary Rpt</th>
+
+                    <th>SS Payable</th>
+                    <th>Med Payable</th>
+                    <th>Med-Plus Payable</th>
+                    <th>Fed Status</th>
+                    <th>Fed Schedule</th>
+                    <th>Fed Rpt</th>
+
+                    <th>HACIENDA Payable</th>
+                    <th>HACIENDA Status</th>
+                    <th>HACIENDA Schedule</th>
+                    <th>HACIENDA Rpt</th>
+
+                    <th>FUTA Payable</th>
+                    <th>FUTA Status</th>
+                    <th>FUTA Schedule</th>
+                    <th>FUTA Rpt</th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+            <tr>
+
+                <td>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:getPayrollTaxesDetail(@item.Id);"><i class="fa fa-eye m-r-5"></i> Details</a>
+                        </div>
+                    </div>
+                </td>
+                <td style="display:none">@Html.DisplayFor(m => item.Id)</td>
+                <td>
+                    @Html.DisplayFor(m => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PayrollName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.PayDate)
+                </td>
+
+                @{
+                    var SumRpt = item.CompanyPayrollSummary == null ? "Not Available" : "Available";
+                    var showHideCls = item.CompanyPayrollSummary == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanSumRpt_@item.Id"> @SumRpt</span>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,0);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadSumRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,0);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+
+                <td> @Html.DisplayFor(m => item.SSPayableAmount)</td>
+                <td> @Html.DisplayFor(m => item.MedPayableAmount)</td>
+                <td> @Html.DisplayFor(m => item.MedPlusPayableAmount)</td>
+                <td>
+                    @{ var stsCls = "";
+                        switch (item.FederalTaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanFedTaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.FederalTaxDepositStatus.FederalTaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,0)" class="fa fa-pencil" title="Edit Status"></a>
+                </td>
+                <td>@Html.DisplayFor(m => item.FederalTaxDepositSchedule.FederalTaxDepositScheduleName) </td>
+                @{
+                    var FedRpt = item.FederalTaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.FederalTaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanFedRpt_@item.Id"> @FedRpt</span>
+                    <div class="dropdown dropdown-action pl-1" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,1);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadFedRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,1);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+
+                <td>@Html.DisplayFor(m => item.HaciendaPayableAmount) </td>
+                <td>
+                    @{ stsCls = "";
+                        switch (item.HaciendaTaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanHacTaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.HaciendaTaxDepositStatus.HaciendaTaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,1)" class="fa fa-pencil" title="Edit Status">  </a>
+                </td>
+                <td>@Html.DisplayFor(m => item.HaciendaTaxDepositSchedule.HaciendaTaxDepositScheduleName) </td>
+                @{
+                    var HacRpt = item.HaciendaTaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.HaciendaTaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanHacRpt_@item.Id"> @HacRpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,2);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+
+                            <a id="downloadHacRpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,2);"><i class="fa fa-download m-r-5"></i> Download</a>
+
+                        </div>
+                    </div>
+                </td>
+                <td>@Html.DisplayFor(m => item.FUTAPayableAmount)
+                <td>
+                    @{ stsCls = "";
+                        switch (item.FUTATaxDepositStatusId)
+                        {
+                            case 1:
+                                stsCls = "pendingStsCls";
+                                break;
+                            case 2:
+                                stsCls = "paidStsCls";
+                                break;
+                        }
+                    }
+                    <span id="spanFUTATaxSt_@item.Id" class="@stsCls">@Html.DisplayFor(m => item.FUTATaxDepositStatus.FUTATaxDepositStatusName)</span>
+                    <a href="javascript:AjaxEditTaxStatus(@item.Id,2)" class="fa fa-pencil" title="Edit Status">  </a>
+                </td>
+                <td>@Html.DisplayFor(m => item.FUTATaxDepositSchedule.FUTATaxDepositScheduleName) </td>
+
+
+                @{
+                    var FUTARpt = item.FUTATaxConfirmation == null ? "Not Available" : "Available";
+                    showHideCls = item.FUTATaxConfirmation == null ? "hideCls" : "showCls";
+                }
+                <td class="text-center">
+                    <span id="spanFUTARpt_@item.Id"> @FUTARpt </span>
+                    <div class="dropdown dropdown-action pl-2" style="display: inline-block;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons" style="color:#007bff;">more_vert</i></a>
+                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(38px, 32px, 0px);">
+                            <a class="dropdown-item" href="javascript:AjaxUploadFile(@item.Id,3);"><i class="fa fa-upload m-r-5"></i> Upload</a>
+                            <a id="downloadFUTARpt_@item.Id" class="dropdown-item @showHideCls" href="javascript:downloadReportFile(@item.Id,3);"><i class="fa fa-download m-r-5"></i> Download</a>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$('#tblPayrollTax').dataTable({
+        //    "searching": true,
+        //    "order": [[2, "desc"]]
+        //});
+             $('#tblPayrollTax').DataTable({
+            "searching": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: 'Bfrtip',
+            "scrollX": true,
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            buttons: [
+
+                {
+                    extend: "excelHtml5",
+                    exportOptions: {
+                        columns: [2, 3, 4, 6, 7, 8, 9,10, 12, 13, 14, 16, 17, 18],
+                        rows: ':visible'
+                    }
+                },
+                {
+                    extend: "print",
+                    exportOptions: {
+                        columns: [2, 3, 4, 6, 7, 8,9, 12, 13, 16, 17],
+                        rows: ':visible'
+                    },
+                    customize: function (win) {
+
+                        var last = null;
+                        var current = null;
+                        var bod = [];
+                        $(win.document.body)
+                            .css('font-size', '10pt');
+
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+
+                        var css = '@@page { size: landscape; }',
+                            head = win.document.head || win.document.getElementsByTagName('head')[0],
+                            style = win.document.createElement('style');
+
+                        style.type = 'text/css';
+                        style.media = 'print';
+
+                        if (style.styleSheet) {
+                            style.styleSheet.cssText = css;
+                        }
+                        else {
+                            style.appendChild(win.document.createTextNode(css));
+                        }
+
+                        head.appendChild(style);
+                    }
+                }, 'pageLength'
+            ],
+            "order": [[2, "desc"]]
+        });
+    });
+
+
+</script>
+

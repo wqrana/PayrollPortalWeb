@@ -1,0 +1,88 @@
+2021-12-15 19:14:31.4145:ERROR: Route Info:(POST)PayrollManagement/IndexByFilter/;, Session Info:UserId:1, POST Values:[]
+System.Data.Entity.Core.EntityCommandExecutionException: The data reader is incompatible with the specified 'TimeAide.Web.Models.Payroll'. A member of the type, 'Id', does not have a corresponding column in the data reader with the same name.
+   at TimeAide.Web.Models.TimeAidePayrollContext.PayrollInformation[T](Int32 companyId, Nullable`1 payDate, Int32 payrollStatusId, Int32 paymentStatusId) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAide.Data\TimeAideModel.cs:line 69
+   at TimeAide.Web.Controllers.PayrollManagementController.getPayrollList(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 30
+   at TimeAide.Web.Controllers.PayrollManagementController.IndexByFilter(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 24
+   at lambda_method(Closure , ControllerBase , Object[] )
+   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<BeginInvokeSynchronousActionMethod>b__39(IAsyncResult asyncResult, ActionInvocation innerInvokeState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`2.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass33.<BeginInvokeActionMethodWithFilters>b__32(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)
+2021-12-15 19:26:06.8395:ERROR: Route Info:(POST)PayrollManagement/IndexByFilter/;, Session Info:UserId:1, POST Values:[]
+System.Data.Entity.Core.EntityCommandExecutionException: The data reader is incompatible with the specified 'TimeAide.Web.Models.Payroll'. A member of the type, 'FUTATaxDepositScheduleId', does not have a corresponding column in the data reader with the same name.
+   at TimeAide.Web.Models.TimeAidePayrollContext.PayrollInformation[T](Int32 companyId, Nullable`1 payDate, Int32 payrollStatusId, Int32 paymentStatusId) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAide.Data\TimeAideModel.cs:line 69
+   at TimeAide.Web.Controllers.PayrollManagementController.getPayrollList(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 30
+   at TimeAide.Web.Controllers.PayrollManagementController.IndexByFilter(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 24
+   at lambda_method(Closure , ControllerBase , Object[] )
+   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<BeginInvokeSynchronousActionMethod>b__39(IAsyncResult asyncResult, ActionInvocation innerInvokeState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`2.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass33.<BeginInvokeActionMethodWithFilters>b__32(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)
+2021-12-15 19:29:29.4821:ERROR: Route Info:(POST)PayrollManagement/IndexByFilter/;, Session Info:UserId:1, POST Values:[]
+System.Data.SqlClient.SqlException (0x80131904): The parameterized query '(@companyId int,@payDate nvarchar(4000),@payrollStatusId int,@pa' expects the parameter '@payDate', which was not supplied.
+   at TimeAide.Web.Models.TimeAidePayrollContext.PayrollInformation[T](Int32 companyId, Nullable`1 payDate, Int32 payrollStatusId, Int32 paymentStatusId) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAide.Data\TimeAideModel.cs:line 69
+   at TimeAide.Web.Controllers.PayrollManagementController.getPayrollList(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 30
+   at TimeAide.Web.Controllers.PayrollManagementController.IndexByFilter(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 24
+   at lambda_method(Closure , ControllerBase , Object[] )
+   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<BeginInvokeSynchronousActionMethod>b__39(IAsyncResult asyncResult, ActionInvocation innerInvokeState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`2.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass33.<BeginInvokeActionMethodWithFilters>b__32(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)
+ClientConnectionId:bf05c0bf-f330-4071-acff-1829c257a6b9
+Error Number:8178,State:1,Class:16
+2021-12-15 19:33:44.3347:ERROR: Route Info:(POST)PayrollManagement/IndexByFilter/;, Session Info:UserId:1, POST Values:[]
+System.Data.SqlClient.SqlException (0x80131904): The parameterized query '(@companyId int,@payDate nvarchar(4000),@payrollStatusId int,@pa' expects the parameter '@payDate', which was not supplied.
+   at TimeAide.Web.Models.TimeAidePayrollContext.PayrollInformation[T](Int32 companyId, Nullable`1 payDate, Int32 payrollStatusId, Int32 paymentStatusId) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAide.Data\TimeAideModel.cs:line 69
+   at TimeAide.Web.Controllers.PayrollManagementController.getPayrollList(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 30
+   at TimeAide.Web.Controllers.PayrollManagementController.IndexByFilter(PayrollFilterViewModel model) in D:\IdentTech-TimeAidePayroll\devOps\Repo\TimeAideWeb\Controllers\PayrollManagementController.cs:line 24
+   at lambda_method(Closure , ControllerBase , Object[] )
+   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<BeginInvokeSynchronousActionMethod>b__39(IAsyncResult asyncResult, ActionInvocation innerInvokeState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`2.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3d()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.AsyncInvocationWithFilters.<>c__DisplayClass46.<InvokeActionMethodFilterAsynchronouslyRecursive>b__3f()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass33.<BeginInvokeActionMethodWithFilters>b__32(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResult`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncResultBase`1.End()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass2b.<BeginInvokeAction>b__1c()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)
+ClientConnectionId:bf05c0bf-f330-4071-acff-1829c257a6b9
+Error Number:8178,State:1,Class:16

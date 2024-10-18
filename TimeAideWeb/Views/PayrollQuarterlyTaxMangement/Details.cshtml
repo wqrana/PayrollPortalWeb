@@ -1,0 +1,285 @@
+﻿@model TimeAide.Web.Models.PayrollQuarterlyTax
+
+<div id="payrollTaxesDetail_modal" class="modal custom-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="mt-2 p-1">
+                <div class="alert alert-primary" style="text-align:center;background-color: #00c5fb;border: 1px solid #00c5fb;">
+                    <h4 style="display: inline;">Quarterly Taxes - Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-auto float-right ml-auto">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-white" onclick='javascript:printDetail()'><i class="fa fa-print fa-lg"></i> Print</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="divPrintDetail">
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Company:
+                            </label>
+                            <div class="col-md-5 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CompanyName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                Quarter:
+                            </label>
+                            <div class="col-md-3 text-muted mt-2">
+                                @Html.DisplayFor(m => m.Quarter)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                Start Date:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.QuarterStartDate)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                End Date:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.QuarterEndDate)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA WH:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTAWHAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTATaxDepositStatus.FUTATaxDepositStatusName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Deposit:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTATaxDepositAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Schedule:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.FUTATaxDepositSchedule.FUTATaxDepositScheduleName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                SUTA WH:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SUTAWHAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                SUTA Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SUTATaxDepositStatus.SUTATaxDepositStatusName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                SUTA Deposit:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SUTATaxDepositAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                SINOT WH:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SINOTWHAmount)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                SINOT Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SINOTTaxDepositStatus.SINOTTaxDepositStatusName)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                SINOT Deposit:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.SINOTTaxDepositAmount)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                CHOFERIL WH:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CHOFERILWHAmount)
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                CHOFERIL Status:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @Html.DisplayFor(m => m.CHOFERILTaxDepositStatus.CHOFERILTaxDepositStatusName)
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                FUTA Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    var showHideCls = Model.FUTATaxRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.FUTATaxRptName)
+                                <div style="display:inline-block">
+                                    <a class="pl-1 @showHideCls" title="Download" href="javascript:downloadReportFile(@Model.Id,0);"><i class="fa fa-download m-r-5"></i></a>
+                                </div>
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                SUTA Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    showHideCls = Model.SUTATaxRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.SUTATaxRptName)
+                                <div style="display:inline-block">
+                                    <a class="@showHideCls pl-1" title="Download" href="javascript:downloadReportFile(@Model.Id,1);"><i class="fa fa-download m-r-5"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label pr-0">
+                                SUTA Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    showHideCls = Model.SINOTTaxRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.SINOTTaxRptName)
+                                <div style="display:inline-block">
+                                    <a class="@showHideCls pl-1" title="Download" href="javascript:downloadReportFile(@Model.Id,2);"><i class="fa fa-download m-r-5"></i></a>
+                                </div>
+                            </div>
+                            <label class="col-md-2 col-form-label pr-0">
+                                CHOFERIL Report:
+                            </label>
+                            <div class="col-md-4 text-muted mt-2">
+                                @{
+                                    showHideCls = Model.CHOFERILTaxRptName == null ? "hideCls" : "showCls";
+                                }
+                                @Html.DisplayFor(m => m.CHOFERILTaxRptName)
+                                <div style="display:inline-block">
+                                    <a class="pl-1 @showHideCls" title="Download" href="javascript:downloadReportFile(@Model.Id,3);"><i class="fa fa-download m-r-5"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div class="submit-section mt-1">
+
+                    <button id="btnCancel" class="btn btn-primary  submit-btn" data-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+            <div style="display:none" id="tblPrint">
+                <table style="border:none;">
+                    <tr>
+                        <th colspan="4">Quarterly Taxes - Detail</th>
+
+                    </tr>
+                    <tr>
+                        <th align="left">Company:</th>
+                        <td>@Html.DisplayFor(m => m.CompanyName)</td>
+                        <th align="left"> Payroll:</th>
+                        <td>@Html.DisplayFor(m => m.Quarter)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> Start Date:</th>
+                        <td>@Html.DisplayFor(m => m.QuarterStartDate)</td>
+                        <th align="left">  End Date:</th>
+                        <td>@Html.DisplayFor(m => m.QuarterEndDate)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">FUTA WH:</th>
+                        <td> @Html.DisplayFor(m => m.FUTAWHAmount)</td>
+                        <th align="left">FUTA Status:</th>
+                        <td>@Html.DisplayFor(m => m.FUTATaxDepositStatus.FUTATaxDepositStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> FUTA Deposit:</th>
+                        <td> @Html.DisplayFor(m => m.FUTATaxDepositAmount)</td>
+                        <th align="left"> FUTA Schedule:</th>
+                        <td>@Html.DisplayFor(m => m.FUTATaxDepositSchedule.FUTATaxDepositScheduleName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> SUTA WH:</th>
+                        <td> @Html.DisplayFor(m => m.SUTAWHAmount)</td>
+                        <th align="left"> SUTA Status:</th>
+                        <td>@Html.DisplayFor(m => m.SUTATaxDepositStatus.SUTATaxDepositStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left"> SUTA Deposit:</th>
+                        <td> @Html.DisplayFor(m => m.SUTATaxDepositAmount)</td>
+                        <th align="left">  SINOT WH:</th>
+                        <td>@Html.DisplayFor(m => m.SINOTWHAmount)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">  SINOT Status:</th>
+                        <td>@Html.DisplayFor(m => m.SINOTTaxDepositStatus.SINOTTaxDepositStatusName)</td>
+                        <th align="left">  SINOT Deposit:</th>
+                        <td>@Html.DisplayFor(m => m.SINOTTaxDepositAmount)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">  CHOFERIL WH:</th>
+                        <td>@Html.DisplayFor(m => m.CHOFERILWHAmount)</td>
+                        <th align="left">  CHOFERIL Status:</th>
+                        <td>@Html.DisplayFor(m => m.CHOFERILTaxDepositStatus.CHOFERILTaxDepositStatusName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">  CHOFERIL Deposit:</th>
+                        <td>@Html.DisplayFor(m => m.CHOFERILTaxDepositAmount)</td>
+                        <th align="left">  CHOFERIL Report:</th>
+                        <td>@Html.DisplayFor(m => m.CHOFERILTaxRptName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">  FUTA Report:</th>
+                        <td>@Html.DisplayFor(m => m.FUTATaxRptName)</td>
+                        <th align="left">  SUTA Report:</th>
+                        <td>@Html.DisplayFor(m => m.SUTATaxRptName)</td>
+                    </tr>
+                    <tr>
+                        <th align="left">  SINOT Deposit:</th>
+                        <td>@Html.DisplayFor(m => m.SINOTTaxRptName)</td>                       
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    });
+    function printDetail() {
+        var divToPrint = document.getElementById('tblPrint');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

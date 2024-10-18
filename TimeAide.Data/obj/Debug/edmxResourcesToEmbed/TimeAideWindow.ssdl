@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TIMEAIDE_7_PSICOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblBatch">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+    </Key>
+    <Property Name="strBatchID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="strCompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="strBatchDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dtBatchCreated" Type="datetime" Nullable="false" />
+    <Property Name="intCreatedByID" Type="int" Nullable="false" />
+    <Property Name="strCreateByName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dtBatchUpdates" Type="datetime" Nullable="false" />
+    <Property Name="intBatchStatus" Type="int" Nullable="false" />
+    <Property Name="dtPayDate" Type="smalldatetime" Nullable="false" />
+    <Property Name="intBatchType" Type="int" Nullable="false" />
+    <Property Name="intTemplateID" Type="int" Nullable="false" />
+    <Property Name="ClosedByUserID" Type="int" />
+    <Property Name="ClosedDateTime" Type="datetime" />
+    <Property Name="intPaymentStatusId" Type="int" />
+    <Property Name="strPaymentStatusByName" Type="nvarchar" MaxLength="100" />
+    <Property Name="dtPaymentStatusDate" Type="datetime" />
+    <Property Name="varPaymentConfirmation" Type="varbinary(max)" />
+    <Property Name="strPaymentConfirmationRptName" Type="nvarchar" MaxLength="100" />
+    <Property Name="varCompanyPayrollSummary" Type="varbinary(max)" />
+    <Property Name="strPayrollSummaryRptName" Type="nvarchar" MaxLength="100" />
+    <Property Name="intFederalTaxDepositScheduleId" Type="int" />
+    <Property Name="intFederalTaxDepositStatusId" Type="int" />
+    <Property Name="decFederalTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="dtFederalTaxDepositDate" Type="datetime" />
+    <Property Name="strFederalTaxEFTPSNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="dtFederalTaxStatusDate" Type="datetime" />
+    <Property Name="strFederalTaxStatusByName" Type="nvarchar" MaxLength="50" />
+    <Property Name="varFederalTaxConfirmation" Type="varbinary(max)" />
+    <Property Name="strFederalTaxRptName" Type="nvarchar" MaxLength="50" />
+    <Property Name="intHaciendaTaxDepositScheduleId" Type="int" />
+    <Property Name="intHaciendaTaxDepositStatusId" Type="int" />
+    <Property Name="decHaciendaTaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="dtHaciendaTaxDepositDate" Type="datetime" />
+    <Property Name="strHaciendaTaxReceiptNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="dtHaciendaTaxStatusDate" Type="datetime" />
+    <Property Name="strHaciendaTaxStatusByName" Type="nvarchar" MaxLength="50" />
+    <Property Name="varHaciendaTaxConfirmation" Type="varbinary(max)" />
+    <Property Name="strHaciendaTaxRptName" Type="nvarchar" MaxLength="50" />
+    <Property Name="intFUTATaxDepositScheduleId" Type="int" />
+    <Property Name="intFUTATaxDepositStatusId" Type="int" />
+    <Property Name="decFUTATaxDepositAmount" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="dtFUTATaxDepositDate" Type="datetime" />
+    <Property Name="strFUTATaxReceiptNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="dtFUTATaxStatusDate" Type="datetime" />
+    <Property Name="strFUTATaxStatusByName" Type="nvarchar" MaxLength="50" />
+    <Property Name="varFUTATaxConfirmation" Type="varbinary(max)" />
+    <Property Name="strFUTATaxRptName" Type="nvarchar" MaxLength="50" />
+    <Property Name="intACHSentCount" Type="int" Nullable="false" />
+    <Property Name="ACHFileName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tCompany">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="30" />
+    <Property Name="Code" Type="nvarchar" MaxLength="10" />
+    <Property Name="nPayRuleID" Type="int" />
+    <Property Name="nSchedID" Type="int" />
+  </EntityType>
+  <Function Name="spPay_rpt_CuadreQuarterlyReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PayrollCompany" Type="nvarchar" Mode="In" />
+    <Parameter Name="StartDate" Type="date" Mode="In" />
+    <Parameter Name="EndDate" Type="date" Mode="In" />
+  </Function>
+  <EntityContainer Name="TIMEAIDE_7_PSICOModelStoreContainer">
+    <EntitySet Name="tblBatch" EntityType="Self.tblBatch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tCompany" EntityType="Self.tCompany" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

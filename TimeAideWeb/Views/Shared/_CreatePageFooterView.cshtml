@@ -1,0 +1,147 @@
+﻿@if (ViewBag.IsBaseCompanyObject)
+{
+<div class="submit-section">
+    <span>All Companies</span>
+    <input type="hidden" id="hdnSelectedCompanyId" value="@TimeAide.Common.Helpers.SessionHelper.SelectedCompanyId" />
+    @if (ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+    {
+        <input type="checkbox" id="chkAllCompanies" checked="checked" />
+    }
+    else if (!ViewBag.CanBeAssignedToCurrentCompany && ViewBag.IsAllCompanies)
+    {
+        <input type="checkbox" id="chkAllCompanies" checked="checked" disabled="disabled" />
+    }
+    else if (!ViewBag.IsAllCompanies)
+    {
+        <input type="checkbox" id="chkAllCompanies" value="@ViewBag.IsAllCompanies" />
+    }
+</div>
+}
+
+<div class="submit-section">
+    <input type="hidden" id="popupTargetDdl" />
+    <button type="button" onclick="fnAddMasterData('@ViewBag.FormName');" class="btn btn-primary submit-btn">Save</button>
+    <button type="button" class="btn btn-primary submit-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    @*<button onclick="$(this).closest('.modal').modal('hide'); return false;">Cancel</button>*@
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    function fnAddMasterData(controller) {
+        var model = {
+        }
+        debugger
+        $('input, select, textarea').each(
+            function (index) {
+                var input = $(this);
+                model[input.attr('name')] = input.val();
+            }
+        );
+
+        $('input[type=checkbox]').each(
+            function (index) {
+                var input = $(this);
+                debugger
+                if (this.id == 'chkAllCompanies') {
+                    if (input.is(":checked")) {
+                        model['CompanyId'] = '';
+                    }
+                    else {
+                        model['CompanyId'] = $('#hdnSelectedCompanyId').val();
+                    }
+
+                }
+                else {
+                    model[input.attr('name')] = (input.is(":checked"));
+                }
+            }
+        );
+        //alert($('.IsExpirable').is(":checked"));
+        //alert(JSON.stringify(model));
+        debugger
+        var actionMethod = "";
+        if (model.Id == null || (typeof (model.Id) === "undefined") || model.Id == 0) { actionMethod = "Create" }
+        else { actionMethod = "Edit" }
+        if ($('#divDdlPopup').is(':visible')) {
+            model.Id = undefined;
+            $.ajax({
+                type: 'post',
+                url: '/' + controller + '/Create',
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (data) {
+                    debugger
+                    //alert(JSON.stringify(data))
+
+                    var id = $("#popupTargetDdl").val();
+                    //alert(id);
+
+                    if (id == null || (typeof (id) === "undefined") || id == '') {
+                        id = controller + 'Id';
+                    }
+
+                    var nameField = controller + 'Name';
+                    if (controller == 'WCClassCode') {
+                        nameField = "ClassName";
+                    }
+
+                    //$('#btnWithDdl').parent().parent().find('select').html()
+                    $('#' + id + '').append('<option value=' + data.Id + '>' + data['' + nameField + ''] + '</option>');
+                    $('#' + id + ' option[value=\'' + data.Id + '\']').prop('selected', 'selected');
+                    $('#divDdlPopup').modal('hide');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+                    debugger
+
+                    $.each(errorObject, function (idx, errorMessage) {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    });
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'post',
+                url: '/' + controller + '/' + actionMethod,
+                data: JSON.stringify(model),
+                contentType: 'application/json; charset=utf-8',
+                dataType: "html",
+                success: function (html) {
+                    debugger
+                    location.reload(true);
+                    $('#myModal').modal('hide');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    debugger
+                    var responseText = jQuery.parseJSON(xhr.responseText)
+                    var errorObject = jQuery.parseJSON(responseText.errors)
+
+                    $.each(errorObject, function (idx, errorMessage) {
+                        $('span[data-valmsg-for="' + errorMessage.Key + '"]').text(errorMessage.Message);
+                    });
+                }
+            });
+        }
+    }
+</script>
+<style type="text/css">
+    .panel {
+        margin-bottom: 20px !important;
+        background-color: #ffffff !important;
+        border: 1px solid transparent !important;
+        border-color: #ddd !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .panel-heading {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+</style>

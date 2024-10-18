@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "Payroll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Header -->
+<div class="page-header mb-2">
+    <div class="row align-items-center">
+        <div class="col-sm-12">
+            <h3 class="page-title">Payroll</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Payroll</li>                
+            </ul>           
+        </div>
+    </div>
+</div>
+<div>
+    <a href="javascript:void(0);" id="filterShowHideBtn">Hide Filter(s)</a>
+</div>
+<div class="row filter-row" id="divFilter">
+    <div class="col-sm-6 col-md-3 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("CompanyId", null, "All", new { @class = "select floating searchableDDL", @id = "CompanyIdF" })
+            <label class="focus-label">Company</label>
+        </div>
+    </div>
+    @{ var fromDD = ((int)ViewBag.PayrollFromDD)*-1;
+        var toDD = ((int)ViewBag.PayrollToDD);
+      }
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            <input id="FromPayDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(fromDD)">
+            <label class="focus-label">From Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            <input id="ToPayDate" type="datetime" class="form-control floating" value="@DateTime.Today.AddDays(toDD)">
+            <label class="focus-label">To Date</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("PayrollStatusId", null, "All", new { @class = "select floating", @id = "PayrollStatusIdF" })
+            <label class="focus-label">Payroll Status</label>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-2 pr-0">
+        <div class="form-group form-focus select-focus">
+            @Html.DropDownList("PaymentStatusId", null, "All", new { @class = "select floating", @id = "PaymentStatusIdF" })
+            <label class="focus-label">Payment Status</label>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-1">
+        <a href="javascript:getPayrollList();" class="btn btn-success btn-block"> Apply </a>
+    </div>
+</div>
+<hr class="mt-1 mb-1" />
+<div id="divLoadingPayroll" class="align-content-md-center">
+    <img src="~/Content/Themes/assets/img/ajax-loading.gif" width="24" height="24" />
+</div>
+<h3> Payroll List </h3>
+
+    <div id="divPayrollListView">
+    </div>
+
+<div id="divEditUploadPopup">
+</div>
+<script>
+    $(document).ready(function () {
+        $('#divLoadingPayroll').hide();
+        $(".searchableDDL").select2();
+        $(".select2-container").css("width", "100%");
+        getPayrollList();
+        $('#filterShowHideBtn').click(function () {
+            debugger;
+
+            switch ($(this).text()) {
+
+                case 'Hide Filter(s)':
+                    $('#divFilter').hide();
+                    $('#filterShowHideBtn').text('Show Filter(s)')
+                    break;
+                case 'Show Filter(s)':
+                    $('#divFilter').show();
+                    $('#filterShowHideBtn').text('Hide Filter(s)')
+                    break;
+            }
+
+        });
+    });
+    function getPayrollList() {
+        $('#divLoadingPayroll').show();
+        var obj = new Object();
+        obj.CompanyId = $('#CompanyIdF').val();
+        obj.PayrollStatusId = $('#PayrollStatusIdF').val();
+        obj.PaymentStatusId = $('#PaymentStatusIdF').val();
+        obj.FromPayDate = $('#FromPayDate').val();
+        obj.ToPayDate = $('#ToPayDate').val();
+        $.ajax({
+            type: "POST",
+            url: '/PayrollManagement/IndexByFilter',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                $("#divPayrollListView").html(data);
+                $('#divLoadingPayroll').hide();
+            },
+            error: function () {
+                showAlertAutoHide("","Error",data.ErrorMessage);
+            }
+        });
+    }
+    function AjaxEditStatus(payrollId, statusTypeId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollManagement/AjaxEditStatus',
+            data: { "payrollId": payrollId, "statusTypeId": statusTypeId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#editPayrollStatus_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    function SaveEditStatus(obj) {
+        $.ajax({
+            type: "POST",
+            url: '/PayrollManagement/SaveEditStatus',
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                if (data.status == "Success") {
+                    debugger;
+                    $("#editPayrollStatus_modal").modal("hide");
+                    showAlertAutoHide("", data.status, data.message);
+                    //getPayrollList();
+                    var statusElement = "#";
+                    if (obj.StatusTypeId == 0)
+                        statusElement += "spanPaymentSt_" + obj.PayrollId;
+                    else if (obj.StatusTypeId == 1)
+                        statusElement += "spanPayrollSt_" + obj.PayrollId;
+
+                    $(statusElement).text(data.retVal);
+                    $(statusElement).removeClass("pendingStsCls").removeClass("paidStsCls");
+                    debugger;
+                    switch (data.retStatusId) {
+                        case 1:
+                            $(statusElement).addClass("pendingStsCls");
+                            break;
+                        case 2:
+                            $(statusElement).addClass("paidStsCls");
+                            break;
+
+                    }
+                    debugger;
+                    var changedTdHtml = $(statusElement).parents("td").html();
+                    var table = $('#tblPayroll').DataTable();
+                    var selectedRow = table.rows().eq(0).filter(function (rowIdx) {
+                        debugger;
+                        return table.cell(rowIdx, 1).data() == obj.PayrollId ? true : false;
+                    });
+                    table.cell(selectedRow[0], 5).data(changedTdHtml);
+                    //table.cell(selectedRow[0], 5).data(dataObj.dblTotalPeriodHours);
+                }
+                else {
+                    showAlertAutoHide("", data.status, data.message);
+                }
+            },
+            error: function () {
+                showAlertAutoHide("", "Error", data.ErrorMessage);
+            }
+        });
+    }
+    function AjaxUploadFile(payrollId, reportTypeId) {
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollManagement/AjaxUploadReportFile',
+            data: { "payrollId": payrollId, "reportTypeId": reportTypeId },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#uploadReport_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+    }
+    
+    function uploadReportFile(obj) {
+        debugger;
+        var formData = new FormData();
+        formData.append("PayrollId", obj.PayrollId);
+        formData.append("ReportTypeId", obj.ReportTypeId);
+        formData.append("ReportFile", obj.ReportFile);
+            $.ajax({
+                type: "POST",
+                url: '/PayrollManagement/UploadReportFile',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    // debugger;
+                    if (data.status == "Success") {
+                        showAlertAutoHide("", data.status, data.message);
+                        $("#uploadReport_modal").modal("hide");
+                        var rptStatus = "#";
+                        var rptDownload = "#";
+                        if (obj.ReportTypeId == 0) {
+                            rptStatus += "spanPaymentRpt_" + obj.PayrollId;
+                            rptDownload += "downloadPaymentRpt_" + obj.PayrollId;
+                        }
+                        else if (obj.ReportTypeId == 1) {
+                            rptStatus += "spanPayrollRpt_" + obj.PayrollId;
+                            rptDownload += "downloadpayrollRpt_" + obj.PayrollId;
+                        }
+                        $(rptStatus).text("Available");
+                        $(rptDownload).removeClass("hideCls").addClass("showCls");
+                    }
+                    else {
+                        showAlertAutoHide("", data.status, data.message);
+                    }
+                },
+                error: function (error) {
+                }
+            });
+
+    }
+    function downloadReportFile(payrollId, reportTypeId) {
+        debugger;
+        window.location.href = "/PayrollManagement/DownloadReportFile?payrollId=" + payrollId + "&reportTypeId=" + reportTypeId;
+       
+    }
+    function getPayrollDetail(id) {
+
+        debugger;
+        $.ajax({
+            type: "get",
+            url: '/PayrollManagement/Details',
+            data: {
+                "id": id
+            },
+
+            success: function (data) {
+                // debugger;
+                //console.log(data);
+                $("#divEditUploadPopup").html(data);
+                $("#payrollDetail_modal").modal("show");
+
+            },
+            error: function () {
+                alert(data.ErrorMessage);
+            }
+        });
+
+    }
+
+</script>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TIMEAIDE_7_PSICOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tCompany">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="nPayRuleID" Type="Int32" />
+    <Property Name="nSchedID" Type="Int32" />
+  </EntityType>
+  <EntityContainer Name="TimeAideWindowContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tCompanies" EntityType="Self.tCompany" />
+    <EntitySet Name="tblBatch" EntityType="TIMEAIDE_7_PSICOModel.tblBatch" />
+    <FunctionImport Name="spPay_rpt_CuadreQuarterlyReport" ReturnType="Collection(TIMEAIDE_7_PSICOModel.spPay_rpt_CuadreQuarterlyReport_Result)">
+      <Parameter Name="PayrollCompany" Mode="In" Type="String" />
+      <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+      <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="tblBatch">
+    <Key>
+      <PropertyRef Name="strBatchID" />
+    </Key>
+    <Property Name="strBatchID" Type="Guid" Nullable="false" />
+    <Property Name="strCompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="strBatchDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchCreated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intCreatedByID" Type="Int32" Nullable="false" />
+    <Property Name="strCreateByName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtBatchUpdates" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="intBatchStatus" Type="Int32" Nullable="false" />
+    <Property Name="dtPayDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="intBatchType" Type="Int32" Nullable="false" />
+    <Property Name="intTemplateID" Type="Int32" Nullable="false" />
+    <Property Name="intPaymentStatusId" Type="Int32" />
+    <Property Name="strPaymentStatusByName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="dtPaymentStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="varPaymentConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strPaymentConfirmationRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="varCompanyPayrollSummary" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strPayrollSummaryRptName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ClosedByUserID" Type="Int32" />
+    <Property Name="ClosedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="intFederalTaxDepositScheduleId" Type="Int32" />
+    <Property Name="intFederalTaxDepositStatusId" Type="Int32" />
+    <Property Name="decFederalTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtFederalTaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strFederalTaxEFTPSNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtFederalTaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strFederalTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varFederalTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strFederalTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intHaciendaTaxDepositScheduleId" Type="Int32" />
+    <Property Name="intHaciendaTaxDepositStatusId" Type="Int32" />
+    <Property Name="decHaciendaTaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtHaciendaTaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strHaciendaTaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtHaciendaTaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strHaciendaTaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varHaciendaTaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strHaciendaTaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intFUTATaxDepositScheduleId" Type="Int32" />
+    <Property Name="intFUTATaxDepositStatusId" Type="Int32" />
+    <Property Name="decFUTATaxDepositAmount" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="dtFUTATaxDepositDate" Type="DateTime" Precision="3" />
+    <Property Name="strFUTATaxReceiptNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dtFUTATaxStatusDate" Type="DateTime" Precision="3" />
+    <Property Name="strFUTATaxStatusByName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="varFUTATaxConfirmation" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="strFUTATaxRptName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="intACHSentCount" Type="Int32" Nullable="false" />
+    <Property Name="ACHFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <ComplexType Name="spPay_rpt_CuadreQuarterlyReport_Result">
+    <Property Type="Decimal" Name="K401_SALARIOS_EXENTOS" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="DEPOSITO_FED" Nullable="false" Precision="18" Scale="5" />
+    <Property Type="Decimal" Name="DEPOSITO_PR" Nullable="false" Precision="18" Scale="5" />
+    <Property Type="String" Name="EFMLAE" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="EFTPS_FED" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="EPSLA" Nullable="false" MaxLength="1" />
+    <Property Type="Decimal" Name="EXENTO_26" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="DateTime" Name="FECHA_DEPOSITO_FED" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="FECHA_DEPOSITO_PR" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="FECHA_NOMINA" Nullable="false" Precision="16" />
+    <Property Type="String" Name="FED_USA" Nullable="false" MaxLength="1" />
+    <Property Type="Decimal" Name="FICA_MED" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="FICA_MED_PLUS" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="FICA_SS" Nullable="false" Precision="19" Scale="2" />
+    <Property Type="Decimal" Name="FUTA" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="FUTA_DEPOSIT" Nullable="false" Precision="18" Scale="5" />
+    <Property Type="String" Name="FUTA_RECEIPT" Nullable="false" MaxLength="50" />
+    <Property Type="Decimal" Name="HACIENDA_PR" Nullable="false" Precision="18" Scale="5" />
+    <Property Type="String" Name="HACIENDA_RECEIPT" Nullable="false" MaxLength="50" />
+    <Property Type="Decimal" Name="INCOME_TAX_RETENIDO" Nullable="false" Precision="19" Scale="2" />
+    <Property Type="String" Name="MES" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="NOMBRE_NOMINA" Nullable="false" MaxLength="50" />
+    <Property Type="Decimal" Name="SALARIO_TRIBUTABLES" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="SALARIOS_MED" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="SALARIOS_MED_PLUS" Nullable="false" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="SALARIOS_SS" Nullable="false" Precision="18" Scale="2" />
+    <Property Type="Guid" Name="strBatchID" Nullable="false" />
+    <Property Type="Decimal" Name="TOTAL_FED" Nullable="true" Precision="38" Scale="2" />
+    <Property Type="Decimal" Name="TOTAL_SALARIOS" Nullable="true" Precision="38" Scale="2" />
+  </ComplexType>
+</Schema>
